@@ -6,19 +6,24 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Kenepa\ResourceLock\Models\ResourceLock;
 
+/*
+ * The HasLocks trait provides several function to models to handle locking and locking of records.
+ */
+
 trait HasLocks
 {
     public function resourceLock(): MorphOne
     {
-        return $this->morphOne(config('resource-lock.models.ResourceLock', ResourceLock::class), 'resourceable');
+        return $this->morphOne(config('resource-lock.models.ResourceLock', ResourceLock::class), 'lockable');
     }
 
     public function lock(): bool
     {
-        if (!$this->isLocked()) {
+        if (! $this->isLocked()) {
             $resourceLock = new ResourceLock;
             $resourceLock->user_id = auth()->user()->id;
             $this->resourceLock()->save($resourceLock);
+
             return true;
         }
 
@@ -47,20 +52,21 @@ trait HasLocks
 
     public function hasExpiredLock(): bool
     {
-        if (!$this->isLocked()) {
+        if (! $this->isLocked()) {
             return false;
         }
 
         $expiredDate = (new Carbon($this->resourceLock->updated_at))->addMinutes(config('resource-lock.locks_expires'));
 
-        return (Carbon::now())->greaterThan($expiredDate);
+        return Carbon::now()->greaterThan($expiredDate);
     }
 
-    public function unlock(bool $force=false): bool
+    public function unlock(bool $force = false): bool
     {
         if ($this->isLocked()) {
             if ($force || $this->lockCreatedByCurrentUser() || $this->hasExpiredLock()) {
                 $this->resourceLock()->delete();
+
                 return true;
             }
         }

@@ -21,15 +21,15 @@
                 <x-filament::icon-button icon="heroicon-s-lock-closed" size="lg"/>
             </div>
             <p class="text-center">
-                This resource has been locked, because a other user is currently editing this resource
+                {{ __('resource-lock::modal.locked_notice') }}
             </p>
         </div>
 
         <div class="flex flex-col justify-center space-y-2">
 
-            @if($isAllowedToUnlock)
+            @if ($isAllowedToUnlock)
                 <button wire:click="$emit('resourceLockObserver::unlock')" class="filament-button filament-button-size-md inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset min-h-[2.25rem] px-4 text-sm text-white shadow focus:ring-white border-transparent bg-danger-600 hover:bg-danger-500 focus:bg-danger-700 focus:ring-offset-danger-700 filament-page-button-action">
-                    Unlock resource
+                    {{ __('resource-lock::modal.unlock_button') }}
                 </button>
             @endif
 
@@ -37,7 +37,7 @@
                href="/">
 
             <span class="">
-                Return
+                {{ __('resource-lock::modal.return_button') }}
             </span>
 
             </a>

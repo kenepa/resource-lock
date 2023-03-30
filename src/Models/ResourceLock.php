@@ -16,7 +16,7 @@ class ResourceLock extends Model
         return $this->belongsTo(config('resource-lock.models.User'));
     }
 
-    public function resourceable(): MorphTo
+    public function lockable(): MorphTo
     {
         return $this->morphTo();
     }

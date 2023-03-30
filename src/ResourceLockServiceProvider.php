@@ -17,26 +17,11 @@ class ResourceLockServiceProvider extends PluginServiceProvider
         // CustomResource::class,
     ];
 
-    protected array $pages = [
-        // CustomPage::class,
-    ];
-
-    protected array $styles = [
-        'plugin-resourcelock' => __DIR__ . '/../resources/dist/resourcelock.css',
-    ];
-
-    protected array $scripts = [
-        'plugin-resourcelock' => __DIR__ . '/../resources/dist/resourcelock.js',
-    ];
-
-    // protected array $beforeCoreScripts = [
-    //     'plugin-resourcelock' => __DIR__ . '/../resources/dist/resourcelock.js',
-    // ];
-
     public function configurePackage(Package $package): void
     {
         $package->name(static::$name)
             ->hasViews()
+            ->hasTranslations()
             ->hasConfigFile()
             ->hasMigration('create_resource_lock_table')
             ->hasInstallCommand(function (InstallCommand $command) {
@@ -56,7 +41,7 @@ class ResourceLockServiceProvider extends PluginServiceProvider
 
         Filament::registerRenderHook(
             'body.end',
-            fn(): string => Blade::render('@livewire(\'resource-lock-observer\')'),
+            fn (): string => Blade::render('@livewire(\'resource-lock-observer\')'),
         );
     }
 }

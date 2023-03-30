@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('user_id')->constrained();
-            $table->morphs('resourceable');
+            $table->morphs('lockable');
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('resource_lock');
+        Schema::dropIfExists('resource_locks');
     }
 };

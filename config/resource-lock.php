@@ -15,7 +15,7 @@ return [
 
     'models' => [
         'User' => \App\Models\User::class,
-//        'ResourceLock' => null,
+        //        'ResourceLock' => null,
     ],
 
     /*
@@ -31,7 +31,7 @@ return [
 
     'unlocker' => [
         'limited_access' => false,
-//        'gate' => ''
+        //        'gate' => ''
     ],
 
     /*
@@ -46,6 +46,19 @@ return [
     */
 
     'locks_expires' => 10,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Lock Expire (in minutes)
+    |--------------------------------------------------------------------------
+    |
+    | This value is the name of your application. This value is used when the
+    | framework needs to place the application's name in a notification or
+    | any other location as required by the application or its packages.
+    |
+    */
+
+    'display_user_of_lock' => true,
 
     /*
     |--------------------------------------------------------------------------
