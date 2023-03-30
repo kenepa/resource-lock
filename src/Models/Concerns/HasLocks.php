@@ -17,6 +17,9 @@ trait HasLocks
         return $this->morphOne(config('resource-lock.models.ResourceLock', ResourceLock::class), 'lockable');
     }
 
+    /*
+     * This function returns true if locking the resource was successful
+     */
     public function lock(): bool
     {
         if (! $this->isLocked()) {
@@ -61,6 +64,9 @@ trait HasLocks
         return Carbon::now()->greaterThan($expiredDate);
     }
 
+    /*
+     * This function returns true if unlocking the resource was successful
+     */
     public function unlock(bool $force = false): bool
     {
         if ($this->isLocked()) {

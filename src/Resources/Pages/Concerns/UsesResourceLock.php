@@ -56,6 +56,7 @@ trait UsesResourceLock
      */
     public function resourceLockObserverInit()
     {
+        $this->returnUrl = $this->getResource()::getUrl('index');
         $this->checkIfResourceLockHasExpired();
         $this->lockResource();
     }
@@ -76,6 +77,10 @@ trait UsesResourceLock
             $this->closeLockedResourceModal();
             $this->record->lock();
         }
+    }
+
+    public function resourceLockReturnUrl() {
+        return $this->getResource()::getUrl('index');
     }
 
     /*
@@ -102,6 +107,7 @@ trait UsesResourceLock
     {
         $this->dispatchBrowserEvent('open-modal', [
             'id' => 'resourceIsLockedNotice',
+            'returnUrl' => $this->resourceLockReturnUrl()
         ]);
     }
 
