@@ -16,11 +16,10 @@ class ResourceLockObserver extends Component
 
     public function mount()
     {
-        if (!config('resource-lock.unlocker.limited_access')) {
+        if (! config('resource-lock.unlocker.limited_access')) {
             $this->isAllowedToUnlock = true;
-        } else if (config('resource-lock.unlocker.limited_access') && Gate::allows(config('resource-lock.unlocker.gate'))) {
+        } elseif (config('resource-lock.unlocker.limited_access') && Gate::allows(config('resource-lock.unlocker.gate'))) {
             $this->isAllowedToUnlock = true;
         }
     }
-    
 }
