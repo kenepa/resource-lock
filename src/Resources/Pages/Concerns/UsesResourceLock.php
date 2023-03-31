@@ -9,7 +9,11 @@ namespace Kenepa\ResourceLock\Resources\Pages\Concerns;
 
 trait UsesResourceLock
 {
+    use UsesLocks;
     private bool $isLockable = true;
+    public string $returnUrl;
+
+    public string $resourceLockType;
 
     /*
      * Initializes livewire event listeners on boot. This function uses livewire lifecycle hooks
@@ -26,30 +30,6 @@ trait UsesResourceLock
     }
 
     /*
-     * This function handles the locking of a resource. It first performs several checks before a resource
-     * is locked. This function is trigger after the resource lock observer has been initialized.
-     */
-    public function lockResource()
-    {
-        $this->resourceLockType = class_basename($this->record);
-
-        if ($this->record->isLockedByCurrentUser()) {
-            // Do Nothing
-        } elseif ($this->record->isLocked()) {
-            $this->openLockedResourceModal();
-        } else {
-            $this->record->lock();
-        }
-    }
-
-    public function checkIfResourceLockHasExpired(): void
-    {
-        if ($this->record->hasExpiredLock()) {
-            $this->record->unlock();
-        }
-    }
-
-    /*
      * This function is triggered when the resource lock observer component has been loaded.
      * The resource lock observer is a livewire component that triggers function based
      * on certain states and events that are happening on the page.
@@ -57,8 +37,8 @@ trait UsesResourceLock
     public function resourceLockObserverInit()
     {
         $this->returnUrl = $this->getResource()::getUrl('index');
-        $this->checkIfResourceLockHasExpired();
-        $this->lockResource();
+        $this->checkIfResourceLockHasExpired($this->record);
+        $this->lockResource($this->record);
     }
 
     public function resourceLockObserverUnload()
@@ -79,10 +59,6 @@ trait UsesResourceLock
         }
     }
 
-    public function resourceLockReturnUrl() {
-        return $this->getResource()::getUrl('index');
-    }
-
     /*
      * In any case the user is able to bypass the modal we also check if that user is allowed
      * to make any changes based on the resource lock that is currently in place.
@@ -97,24 +73,4 @@ trait UsesResourceLock
         parent::save($shouldRedirect);
     }
 
-    /*
-     * Inside the resource lock observer blade component is a modal that contains the actions that
-     * a user can take when they are greeted by one of these modals.
-     * This is filament native modal that is called.
-     * Learn more: https://github.com/filamentphp/filament/discussions/3419
-     */
-    protected function openLockedResourceModal(): void
-    {
-        $this->dispatchBrowserEvent('open-modal', [
-            'id' => 'resourceIsLockedNotice',
-            'returnUrl' => $this->resourceLockReturnUrl()
-        ]);
-    }
-
-    protected function closeLockedResourceModal(): void
-    {
-        $this->dispatchBrowserEvent('close-modal', [
-            'id' => 'resourceIsLockedNotice',
-        ]);
-    }
 }

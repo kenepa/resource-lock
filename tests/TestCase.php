@@ -15,17 +15,8 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Kenepa\\ResourceLock\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Kenepa\\ResourceLock\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
-    }
-
-    protected function getPackageProviders($app)
-    {
-        return [
-            LivewireServiceProvider::class,
-            FilamentServiceProvider::class,
-            ResourceLockServiceProvider::class,
-        ];
     }
 
     public function getEnvironmentSetUp($app)
@@ -38,14 +29,22 @@ class TestCase extends Orchestra
         ]);
         config()->set('resource-lock.models.User', '\Kenepa\ResourceLock\Tests\Resources\Models\User');
 
-        $migration = include __DIR__.'/../database/migrations/create_resource_lock_table.php.stub';
+        $migration = include __DIR__ . '/../database/migrations/create_resource_lock_table.php.stub';
         $migration->up();
 
-        $migration = include __DIR__.'/Migrations/post_migration.php';
+        $migration = include __DIR__ . '/Migrations/post_migration.php';
         $migration->up();
 
-        $migration = include __DIR__.'/Migrations/user_migration.php';
+        $migration = include __DIR__ . '/Migrations/user_migration.php';
         $migration->up();
+    }
 
+    protected function getPackageProviders($app)
+    {
+        return [
+            LivewireServiceProvider::class,
+            FilamentServiceProvider::class,
+            ResourceLockServiceProvider::class,
+        ];
     }
 }

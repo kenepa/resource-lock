@@ -12,6 +12,12 @@
         window.addEventListener('open-modal', event => {
             console.log(event.detail.returnUrl)
         })
+
+        window.addEventListener('close-modal', event => {
+            if (event.detail.id.endsWith('-table-action')) {
+                Livewire.emit('resourceLockObserver::unload')
+            }
+        })
     </script>
 
     <x-filament::modal

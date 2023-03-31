@@ -1,11 +1,11 @@
 <?php
 
-use Carbon\Carbon;
 use Kenepa\ResourceLock\Models\ResourceLock;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseCount;
 
-it('can lock a resource', function() {
+it('can lock a resource', function () {
     $user = createUser();
     actingAs($user);
     $post = createPost();
@@ -32,7 +32,6 @@ it('can unlock a resource', function () {
     $post->refresh();
     $post->unlock();
     $post->refresh();
-
 
     expect($post->resourceLock)->toBeNull();
     assertDatabaseCount(ResourceLock::class, 0);
@@ -61,9 +60,7 @@ it('can check if a lock has been expired', function () {
     $user = createUser();
     actingAs($user);
     $post = createPost();
-     createExpiredResourceLock($user, $post);
+    createExpiredResourceLock($user, $post);
 
     expect($post->hasExpiredLock())->toBeTrue();
 });
-
-
