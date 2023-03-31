@@ -10,10 +10,11 @@ namespace Kenepa\ResourceLock\Resources\Pages\Concerns;
 trait UsesResourceLock
 {
     use UsesLocks;
-    private bool $isLockable = true;
+
     public string $returnUrl;
 
     public string $resourceLockType;
+    private bool $isLockable = true;
 
     /*
      * Initializes livewire event listeners on boot. This function uses livewire lifecycle hooks
@@ -72,5 +73,4 @@ trait UsesResourceLock
 
         parent::save($shouldRedirect);
     }
-
 }

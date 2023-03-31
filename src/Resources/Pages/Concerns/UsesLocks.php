@@ -4,7 +4,6 @@ namespace Kenepa\ResourceLock\Resources\Pages\Concerns;
 
 trait UsesLocks
 {
-
     public function checkIfResourceLockHasExpired($record): void
     {
         if ($record->hasExpiredLock()) {
@@ -29,6 +28,11 @@ trait UsesLocks
         }
     }
 
+    public function resourceLockReturnUrl()
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
     /*
 * Inside the resource lock observer blade component is a modal that contains the actions that
 * a user can take when they are greeted by one of these modals.
@@ -49,10 +53,4 @@ trait UsesLocks
             'id' => 'resourceIsLockedNotice',
         ]);
     }
-
-    public function resourceLockReturnUrl()
-    {
-        return $this->getResource()::getUrl('index');
-    }
-
 }
