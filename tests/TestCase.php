@@ -28,6 +28,7 @@ class TestCase extends Orchestra
             'prefix' => '',
         ]);
         config()->set('resource-lock.models.User', '\Kenepa\ResourceLock\Tests\Resources\Models\User');
+        config()->set('app.key', '6rE9Nz59bGRbeMATftriyQjrpF7DcOQm');
 
         $migration = include __DIR__ . '/../database/migrations/create_resource_lock_table.php.stub';
         $migration->up();
