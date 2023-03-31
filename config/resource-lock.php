@@ -7,15 +7,15 @@ return [
     | Models
     |--------------------------------------------------------------------------
     |
-    | This value is the name of your application. This value is used when the
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
+    | The models configuration specifies the classes that represent your application's
+    | data objects. This configuration is used by the framework to interact with
+    | the application's data models. You can even implement your own ResourceLock model.
     |
     */
 
     'models' => [
         'User' => \App\Models\User::class,
-        //        'ResourceLock' => null,
+        // 'ResourceLock' => null,
     ],
 
     /*
@@ -23,53 +23,41 @@ return [
     | Resource Unlocker
     |--------------------------------------------------------------------------
     |
-    | This value is the name of your application. This value is used when the
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
+    | The unlocker configuration specifies whether limited access is enabled for
+    | the resource lock feature. If limited access is enabled, only specific
+    | users or roles will be able to unlock locked resources.
     |
     */
 
     'unlocker' => [
         'limited_access' => false,
-        //        'gate' => ''
+        // 'gate' => ''
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Lock Expire (in minutes)
+    | Lock timeout (in minutes)
     |--------------------------------------------------------------------------
     |
-    | This value is the name of your application. This value is used when the
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
-    |
-    */
-
-    'locks_expires' => 10,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Lock Expire (in minutes)
-    |--------------------------------------------------------------------------
-    |
-    | This value is the name of your application. This value is used when the
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
+    | The lock_timeout configuration specifies the time interval, in minutes,
+    | after which a lock on a resource will expire if it has not been manually
+    | unlocked or released by the user.
     |
     */
 
-    'display_user_of_lock' => true,
+    'lock_timeout' => 10,
 
     /*
     |--------------------------------------------------------------------------
-    | Throw forbidden exception
+    | Throw Forbidden Exception
     |--------------------------------------------------------------------------
     |
-    | If a tech savvy user is able to bypass the locked resource modal an 304 forbidden
-    | exception will be thrown right before the model is saved. The user will be
-    | greeted by a 403 error.
+    | The throw_forbidden_exception configuration specifies whether a 403 forbidden
+    | exception should be thrown if a tech-savvy user is able to bypass the locked
+    | resource modal and attempt to save the resource.
     |
     */
 
     'throw_forbidden_exception' => true,
 ];
+

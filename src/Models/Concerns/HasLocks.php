@@ -78,7 +78,7 @@ trait HasLocks
             return false;
         }
 
-        $expiredDate = (new Carbon($this->resourceLock->updated_at))->addMinutes(config('resource-lock.locks_expires'));
+        $expiredDate = (new Carbon($this->resourceLock->updated_at))->addMinutes(config('resource-lock.lock_timeout'));
 
         return Carbon::now()->greaterThan($expiredDate);
     }
