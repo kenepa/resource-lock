@@ -15,6 +15,8 @@ user begins editing a resource, Filament Resource Lock automatically locks the r
 editing it at the same time. The resource will be automatically unlocked after a set period of time, or when the user
 saves or discards their changes.
 
+<img style="width: 100%; max-width: 100%;" alt="filament-shield-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-lock-demo.gif" >
+
 ## Installation
 
 You can install the package via composer:
