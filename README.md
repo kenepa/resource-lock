@@ -39,9 +39,9 @@ the [EditRecord](https://filamentphp.com/docs/2.x/admin/resources/editing-record
 a [simple modal resource.](https://filamentphp.com/docs/2.x/admin/resources/getting-started#simple-modal-resources)
 Follow the steps below to add locks to your resources.
 
-### Add Locks to your modal
+### Add Locks to your model
 
-The first step is to add the HasLocks trait to the modal of your resource. The HasLocks trait enables the locking
+The first step is to add the HasLocks trait to the model of your resource. The HasLocks trait enables the locking
 functionality on your model.
 
 ```php
@@ -119,9 +119,21 @@ the [Spatie Permissions package](https://github.com/spatie/laravel-permission).
     */
 
     'unlocker' => [
-        'limited_access' => false,
+        'limited_access' => true,
         'gate' => 'unlock-resource'
     ],
+```
+
+Example
+```php
+
+// Example using gates
+Gate::define('unlock-resource', function (User $user, Post $post) {
+  return $user->email === 'admin@mail.com';
+});
+
+// Example using spatie permission package
+Permission::create(['name' => 'unlock-resource']);
 ```
 
 ### Using custom models

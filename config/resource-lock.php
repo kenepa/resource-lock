@@ -49,15 +49,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Throw Forbidden Exception
+    | Check Locks before saving
     |--------------------------------------------------------------------------
     |
-    | The throw_forbidden_exception configuration specifies whether a 403 forbidden
-    | exception should be thrown if a tech-savvy user is able to bypass the locked
-    | resource modal and attempt to save the resource.
+    | The check_locks_before_saving configuration specifies whether a lock of a resource will be checked
+    | before saving a resource if a tech-savvy user is able to bypass the locked
+    | resource modal and attempt to save the resource. In some cases you may want to turns this off.
+    | It's recommended to keep this on.
     |
     */
 
-    'throw_forbidden_exception' => true,
+    'check_locks_before_saving' => true,
 ];
 

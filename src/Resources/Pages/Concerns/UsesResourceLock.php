@@ -67,8 +67,13 @@ trait UsesResourceLock
      */
     public function save(bool $shouldRedirect = true): void
     {
-        if (config('resource-lock.throw_forbidden_exception', true)) {
-            abort_unless($this->record->isLocked() && $this->record->isLockedByCurrentUser(), 403);
+        if (config('resource-lock.check_locks_before_saving', true)) {
+            $this->record->refresh();
+            if ($this->record->isLocked() && !$this->record->isLockedByCurrentUser()) {
+                $this->checkIfResourceLockHasExpired($this->record);
+                $this->lockResource($this->record);
+                return;
+            }
         }
 
         parent::save($shouldRedirect);
