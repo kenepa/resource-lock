@@ -220,6 +220,12 @@ Optionally, you can publish the views using
 php artisan vendor:publish --tag="resource-lock-views"
 ```
 
+## Coming soon
+
+- Locked status indicator for table rows
+- Polling
+- Displaying which users has locked a resource
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
