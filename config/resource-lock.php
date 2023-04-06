@@ -40,10 +40,9 @@ return [
     | Resource Lock Manager
     |--------------------------------------------------------------------------
     |
-    | The unlocker configuration specifies whether limited access is enabled for
-    | the resource unlock button. If limited access is enabled, only specific
-    | users or roles will be able to unlock locked resources directly from
-    | the modal.
+    | The resource lock manager provides a simple way to view all resource locks
+    | of your application. It provides several ways to quickly unlock all or
+    | specific resources within your app.
     |
     */
 
