@@ -5,10 +5,10 @@
 </a>
 
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/kenepa/resourcelock.svg?style=flat-square)](https://packagist.org/packages/kenepa/resourcelock)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/kenepa/resourcelock/run-tests?label=tests)](https://github.com/kenepa/resourcelock/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/kenepa/resourcelock/Check%20&%20fix%20styling?label=code%20style)](https://github.com/kenepa/resourcelock/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/kenepa/resourcelock.svg?style=flat-square)](https://packagist.org/packages/kenepa/resourcelock)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/kenepa/resource-lock.svg?style=flat-square)](https://packagist.org/packages/kenepa/resource-lock)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/kenepa/resourcelock/run-tests?label=tests)](https://github.com/kenepa/resource-lock/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/kenepa/resource-lock/Check%20&%20fix%20styling?label=code%20style)](https://github.com/kenepa/resource-lock/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/kenepa/resourcelock.svg?style=flat-square)](https://packagist.org/packages/kenepa/resource-lock)
 
 Filament Resource Lock is a Filament plugin that adds resource locking functionality to your site. When a
 user begins editing a resource, Filament Resource Lock automatically locks the resource to prevent other users from
