@@ -20,18 +20,39 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Resource Unlocker
+    | Resource Unlocker Button
     |--------------------------------------------------------------------------
     |
     | The unlocker configuration specifies whether limited access is enabled for
-    | the resource lock feature. If limited access is enabled, only specific
-    | users or roles will be able to unlock locked resources.
+    | the resource unlock button. If limited access is enabled, only specific
+    | users or roles will be able to unlock locked resources directly from
+    | the modal.
     |
     */
 
     'unlocker' => [
         'limited_access' => false,
         // 'gate' => ''
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Resource Lock Manager
+    |--------------------------------------------------------------------------
+    |
+    | The unlocker configuration specifies whether limited access is enabled for
+    | the resource unlock button. If limited access is enabled, only specific
+    | users or roles will be able to unlock locked resources directly from
+    | the modal.
+    |
+    */
+
+    'manager' => [
+        'navigation_label' => 'Resource Lock Manager',
+        'navigation_group' => 'Ticket',
+        'navigation_sort' => 1,
+        'limited_access' => true,
+        'gate' => 'manager'
     ],
 
     /*

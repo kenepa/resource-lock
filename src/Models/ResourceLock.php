@@ -2,6 +2,7 @@
 
 namespace Kenepa\ResourceLock\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,5 +20,12 @@ class ResourceLock extends Model
     public function lockable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function isExpired(): bool
+    {
+        $expiredDate = (new Carbon($this->updated_at))->addMinutes(config('resource-lock.lock_timeout'));
+
+        return Carbon::now()->greaterThan($expiredDate);
     }
 }

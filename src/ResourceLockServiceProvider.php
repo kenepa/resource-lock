@@ -5,6 +5,7 @@ namespace Kenepa\ResourceLock;
 use Filament\Facades\Filament;
 use Filament\PluginServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Kenepa\ResourceLock\Resources\ResourceLockResource;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -14,7 +15,7 @@ class ResourceLockServiceProvider extends PluginServiceProvider
     public static string $name = 'resource-lock';
 
     protected array $resources = [
-        // CustomResource::class,
+        ResourceLockResource::class,
     ];
 
     public function configurePackage(Package $package): void
