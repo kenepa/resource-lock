@@ -39,9 +39,9 @@ the [EditRecord](https://filamentphp.com/docs/2.x/admin/resources/editing-record
 a [simple modal resource.](https://filamentphp.com/docs/2.x/admin/resources/getting-started#simple-modal-resources)
 Follow the steps below to add locks to your resources.
 
-### Add Locks to your modal
+### Add Locks to your model
 
-The first step is to add the HasLocks trait to the modal of your resource. The HasLocks trait enables the locking
+The first step is to add the HasLocks trait to the model of your resource. The HasLocks trait enables the locking
 functionality on your model.
 
 ```php
@@ -95,13 +95,21 @@ class ListExamples extends ManageRecords
 And that's it! Your resource is now able to be locked. Refer to the documentation below for more information on how to
 configure the locking functionality.
 
+## Resource Lock manager
+
+<img style="width: 100%; max-width: 100%;" alt="filament-shield-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-lock-manager.png" >
+
+The package also provides a simple way to manage and view all your active and expired locks within your app. And it also
+provides a way to quickly unlock all resources or specific locks.
+
 ## Configuration
 
 ### Access
 
 <img style="width: 100%; max-width: 100%;" alt="filament-shield-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-locked.png" >
 
-You can restrict the access to the **Unlock** button by adjusting the access variable. Enabling the "limited" key and
+You can restrict the access to the **Unlock** button or to the resource manager by adjusting the access variable.
+Enabling the "limited" key and
 setting it to true allows you to specify either a Laravel Gate class or a permission name from
 the [Spatie Permissions package](https://github.com/spatie/laravel-permission).
 
@@ -119,9 +127,22 @@ the [Spatie Permissions package](https://github.com/spatie/laravel-permission).
     */
 
     'unlocker' => [
-        'limited_access' => false,
+        'limited_access' => true,
         'gate' => 'unlock-resource'
     ],
+```
+
+Example
+
+```php
+
+// Example using gates
+Gate::define('unlock-resource', function (User $user, Post $post) {
+  return $user->email === 'admin@mail.com';
+});
+
+// Example using spatie permission package
+Permission::create(['name' => 'unlock-resource']);
 ```
 
 ### Using custom models
@@ -198,6 +219,12 @@ Optionally, you can publish the views using
 ```bash
 php artisan vendor:publish --tag="resource-lock-views"
 ```
+
+## Coming soon
+
+- Locked status indicator for table rows
+- Polling
+- Displaying which users has locked a resource
 
 ## Changelog
 

@@ -20,18 +20,38 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Resource Unlocker
+    | Resource Unlocker Button
     |--------------------------------------------------------------------------
     |
     | The unlocker configuration specifies whether limited access is enabled for
-    | the resource lock feature. If limited access is enabled, only specific
-    | users or roles will be able to unlock locked resources.
+    | the resource unlock button. If limited access is enabled, only specific
+    | users or roles will be able to unlock locked resources directly from
+    | the modal.
     |
     */
 
     'unlocker' => [
         'limited_access' => false,
         // 'gate' => ''
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Resource Lock Manager
+    |--------------------------------------------------------------------------
+    |
+    | The resource lock manager provides a simple way to view all resource locks
+    | of your application. It provides several ways to quickly unlock all or
+    | specific resources within your app.
+    |
+    */
+
+    'manager' => [
+        'navigation_label' => 'Resource Lock Manager',
+        'navigation_group' => 'Ticket',
+        'navigation_sort' => 1,
+        'limited_access' => true,
+        'gate' => 'manager'
     ],
 
     /*
@@ -49,15 +69,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Throw Forbidden Exception
+    | Check Locks before saving
     |--------------------------------------------------------------------------
     |
-    | The throw_forbidden_exception configuration specifies whether a 403 forbidden
-    | exception should be thrown if a tech-savvy user is able to bypass the locked
-    | resource modal and attempt to save the resource.
+    | The check_locks_before_saving configuration specifies whether a lock of a resource will be checked
+    | before saving a resource if a tech-savvy user is able to bypass the locked
+    | resource modal and attempt to save the resource. In some cases you may want to turns this off.
+    | It's recommended to keep this on.
     |
     */
 
-    'throw_forbidden_exception' => true,
+    'check_locks_before_saving' => true,
 ];
 

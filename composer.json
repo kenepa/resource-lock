@@ -1,6 +1,6 @@
 {
     "name": "kenepa/resource-lock",
-    "description": "This is my package resource lock",
+    "description": "Filament Resource Lock is a Filament plugin that adds resource locking functionality to your site.",
     "keywords": [
         "Kenepa",
         "laravel",
