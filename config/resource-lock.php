@@ -48,10 +48,10 @@ return [
 
     'manager' => [
         'navigation_label' => 'Resource Lock Manager',
-        'navigation_group' => 'Ticket',
+        'navigation_group' => 'Settings',
         'navigation_sort' => 1,
-        'limited_access' => true,
-        'gate' => 'manager'
+        'limited_access' => false,
+//        'gate' => ''
     ],
 
     /*
