@@ -14,6 +14,7 @@ trait UsesResourceLock
     public string $returnUrl;
 
     public string $resourceLockType;
+
     private bool $isLockable = true;
 
     /*
@@ -69,9 +70,10 @@ trait UsesResourceLock
     {
         if (config('resource-lock.check_locks_before_saving', true)) {
             $this->record->refresh();
-            if ($this->record->isLocked() && !$this->record->isLockedByCurrentUser()) {
+            if ($this->record->isLocked() && ! $this->record->isLockedByCurrentUser()) {
                 $this->checkIfResourceLockHasExpired($this->record);
                 $this->lockResource($this->record);
+
                 return;
             }
         }

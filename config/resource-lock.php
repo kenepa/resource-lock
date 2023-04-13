@@ -51,7 +51,7 @@ return [
         'navigation_group' => 'Settings',
         'navigation_sort' => 1,
         'limited_access' => false,
-//        'gate' => ''
+        //        'gate' => ''
     ],
 
     /*
@@ -81,4 +81,3 @@ return [
 
     'check_locks_before_saving' => true,
 ];
-

@@ -6,5 +6,5 @@ return [
     'unlock' => 'Entsperren',
     'unlocked' => 'Entsperrter Ressourcen',
     'unlocked_selected' => 'Ausgewählte Ressourcen entsperrt',
-    'unlock_all' => 'Alle Ressourcen entsperren'
+    'unlock_all' => 'Alle Ressourcen entsperren',
 ];

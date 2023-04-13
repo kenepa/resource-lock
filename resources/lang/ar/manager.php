@@ -6,5 +6,5 @@ return [
     'unlock' => 'إلغاء القفل',
     'unlocked' => 'تم إلغاء القفل',
     'unlocked_selected' => 'تم إلغاء قفل العناصر المحددة',
-    'unlock_all' => 'إلغاء قفل الكل'
+    'unlock_all' => 'إلغاء قفل الكل',
 ];
