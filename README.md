@@ -170,6 +170,53 @@ implementation.
     ],
 ```
 
+### Displaying the user has locked the resource
+
+Use the ```display_resource_lock_owner``` within the ```resource-lock.php``` config to control whether or not the locked
+resource owner is
+displayed in the modal. Set the option to **true** to show the owner's username or other identifying information. The
+modal
+can be triggered by a button click or automatically when the resource is accessed.
+
+By default, the package displays the name of the user: ```$userModel->name```. However, if your user model doesn't have
+a name or you want to display a different identifier, you can create a custom action to overwrite the default behavior.
+
+This package uses actions which allows you to implement your own custom logic. An action class is nothing more than a
+simple class with a method that executes some
+logic. [Learn more about actions](https://freek.dev/2442-strategies-for-making-laravel-packages-customizable)
+
+To create a custom action, first create a file within your project and name
+it ```CustomGetResourceLockOwnerAction.php```, for
+example. In this file, create a new class that extends the ```GetResourceLockOwnerAction``` class and override the
+execute
+method to return the desired identifier. For example:
+
+```php
+namespace App\Actions;
+
+use Kenepa\ResourceLock\Actions\GetResourceLockOwnerAction;
+
+class CustomResourceLockOwnerAction extends GetResourceLockOwnerAction
+{
+    public function execute($userModel): string|null
+    {
+        return $userModel->email;
+    }
+}
+```
+
+Next, register your custom action within the resource-lock.config file. Replace the default
+get_resource_lock_owner_action value with your custom action's class name. For example:
+
+```php
+
+    'actions' => [
+-       'get_resource_lock_owner_action' => \Kenepa\ResourceLock\Actions\GetResourceLockOwnerAction::class
++       'get_resource_lock_owner_action' => \Kenepa\ResourceLock\Actions\CustomGetResourceLockOwnerAction::class   
+    ],
+
+```
+
 ### Overriding default functionality
 
 If you need some custom functionality beyond what the traits provide, you can override the functions that they use. For
@@ -224,7 +271,6 @@ php artisan vendor:publish --tag="resource-lock-views"
 
 - Locked status indicator for table rows
 - Polling
-- Displaying which users has locked a resource
 
 ## Changelog
 

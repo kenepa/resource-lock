@@ -80,4 +80,14 @@ trait UsesResourceLock
 
         parent::save($shouldRedirect);
     }
+
+    public function getResourceLockOwner(): void
+    {
+        if (config('resource-lock.lock_notice.display_resource_lock_owner', false)) {
+            $getResourceLockOwnerActionClass = config('resource-lock.actions.get_resource_lock_owner_action');
+            $getResourceLockOwnerAction = app($getResourceLockOwnerActionClass);
+
+            $this->resourceLockOwner = $getResourceLockOwnerAction->execute($this->record->resourceLock->user);
+        }
+    }
 }

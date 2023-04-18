@@ -9,10 +9,6 @@
             Livewire.emit('resourceLockObserver::unload')
         };
 
-        window.addEventListener('open-modal', event => {
-            console.log(event.detail.returnUrl)
-        })
-
         window.addEventListener('close-modal', event => {
             if (event.detail.id.endsWith('-table-action')) {
                 Livewire.emit('resourceLockObserver::unload')
@@ -26,11 +22,14 @@
             :disabled="true"
             :closeByClickingAway="false"
     >
-        <div>
+        <div x-data="{ resourceLockOwner: null}"  @open-modal.window="(event) => { resourceLockOwner = event.detail.resourceLockOwner}">
             <div class="flex justify-center ">
                 <x-filament::icon-button icon="heroicon-s-lock-closed" size="lg"/>
             </div>
-            <p class="text-center">
+            <p x-show="resourceLockOwner" class="text-center">
+                <span  x-text="resourceLockOwner" class="font-bold"></span> {{ __('resource-lock::modal.locked_notice_user') }}
+            </p>
+            <p x-show="resourceLockOwner === null" class="text-center">
                 {{ __('resource-lock::modal.locked_notice') }}
             </p>
         </div>
