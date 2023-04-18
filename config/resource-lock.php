@@ -41,7 +41,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | The lock notice contains several configuration options for the modal
-    | that is display when a resource is locked
+    | that is display when a resource is locked.
     |
     */
 
