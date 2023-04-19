@@ -6,5 +6,5 @@ return [
     'unlock' => 'Unlock',
     'unlocked' => 'Unlocked resource',
     'unlocked_selected' => 'Unlocked selected resources',
-    'unlock_all' => 'Unlock all resources'
+    'unlock_all' => 'Unlock all resources',
 ];

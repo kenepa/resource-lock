@@ -37,6 +37,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Lock Notice
+    |--------------------------------------------------------------------------
+    |
+    | The lock notice contains several configuration options for the modal
+    | that is display when a resource is locked.
+    |
+    */
+
+    'lock_notice' => [
+        'display_resource_lock_owner' => false,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Resource Lock Manager
     |--------------------------------------------------------------------------
     |
@@ -51,7 +65,7 @@ return [
         'navigation_group' => 'Settings',
         'navigation_sort' => 1,
         'limited_access' => false,
-//        'gate' => ''
+        //        'gate' => ''
     ],
 
     /*
@@ -80,5 +94,20 @@ return [
     */
 
     'check_locks_before_saving' => true,
-];
 
+    /*
+   |--------------------------------------------------------------------------
+   | Actions
+   |--------------------------------------------------------------------------
+   |
+   | Action classes are simple classes that execute some logic within the package.
+   | If you want to add your own custom logic you are able to extend your own
+   | class with class your overwriting.
+   | Learn more about action classes: https://freek.dev/2442-strategies-for-making-laravel-packages-customizable
+   |
+   */
+
+    'actions' => [
+        'get_resource_lock_owner_action' => \Kenepa\ResourceLock\Actions\GetResourceLockOwnerAction::class,
+    ],
+];

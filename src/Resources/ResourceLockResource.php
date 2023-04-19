@@ -2,18 +2,12 @@
 
 namespace Kenepa\ResourceLock\Resources;
 
-use App\Filament\Resources\ResourceResource\Pages;
-use App\Filament\Resources\ResourceResource\RelationManagers;
-use App\Models\Resource as ResourceModel;
-use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Gate;
 use Kenepa\ResourceLock\Models\ResourceLock;
 use Kenepa\ResourceLock\Resources\ResourceLockResource\ManageResourceLocks;
@@ -47,6 +41,7 @@ class ResourceLockResource extends Resource
                         if ($record->isExpired()) {
                             return 'warning';
                         }
+
                         return 'success';
                     })
                     ->icon(static function ($record): string {
@@ -61,7 +56,7 @@ class ResourceLockResource extends Resource
                         }
 
                         return __('resource-lock::manager.active');
-                    })
+                    }),
             ])
             ->filters([
                 //
@@ -109,7 +104,7 @@ class ResourceLockResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return config('resource-lock.manager.navigation_label','Resource Lock Manager');
+        return config('resource-lock.manager.navigation_label', 'Resource Lock Manager');
     }
 
     public static function getNavigationGroup(): ?string

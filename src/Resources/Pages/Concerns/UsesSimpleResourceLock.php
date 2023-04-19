@@ -33,12 +33,14 @@ trait UsesSimpleResourceLock
         $this->lockResource($this->resourceRecord);
     }
 
-    public function callMountedTableAction(?string $arguments = null) {
+    public function callMountedTableAction(?string $arguments = null)
+    {
         if (config('resource-lock.check_locks_before_saving', true)) {
             $this->resourceRecord->refresh();
-            if ($this->resourceRecord->isLocked() && !$this->resourceRecord->isLockedByCurrentUser()) {
+            if ($this->resourceRecord->isLocked() && ! $this->resourceRecord->isLockedByCurrentUser()) {
                 $this->checkIfResourceLockHasExpired($this->resourceRecord);
                 $this->lockResource($this->resourceRecord);
+
                 return;
             }
         }
@@ -55,6 +57,16 @@ trait UsesSimpleResourceLock
         if ($this->resourceRecord->unlock(force: true)) {
             $this->closeLockedResourceModal();
             $this->resourceRecord->lock();
+        }
+    }
+
+    public function getResourceLockOwner(): void
+    {
+        if (config('resource-lock.lock_notice.display_resource_lock_owner', false)) {
+            $getResourceLockOwnerActionClass = config('resource-lock.actions.get_resource_lock_owner_action');
+            $getResourceLockOwnerAction = app($getResourceLockOwnerActionClass);
+
+            $this->resourceLockOwner = $getResourceLockOwnerAction->execute($this->resourceRecord->resourceLock->user);
         }
     }
 }

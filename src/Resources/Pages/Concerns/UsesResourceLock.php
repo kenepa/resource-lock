@@ -14,6 +14,7 @@ trait UsesResourceLock
     public string $returnUrl;
 
     public string $resourceLockType;
+
     private bool $isLockable = true;
 
     /*
@@ -69,13 +70,24 @@ trait UsesResourceLock
     {
         if (config('resource-lock.check_locks_before_saving', true)) {
             $this->record->refresh();
-            if ($this->record->isLocked() && !$this->record->isLockedByCurrentUser()) {
+            if ($this->record->isLocked() && ! $this->record->isLockedByCurrentUser()) {
                 $this->checkIfResourceLockHasExpired($this->record);
                 $this->lockResource($this->record);
+
                 return;
             }
         }
 
         parent::save($shouldRedirect);
+    }
+
+    public function getResourceLockOwner(): void
+    {
+        if (config('resource-lock.lock_notice.display_resource_lock_owner', false)) {
+            $getResourceLockOwnerActionClass = config('resource-lock.actions.get_resource_lock_owner_action');
+            $getResourceLockOwnerAction = app($getResourceLockOwnerActionClass);
+
+            $this->resourceLockOwner = $getResourceLockOwnerAction->execute($this->record->resourceLock->user);
+        }
     }
 }

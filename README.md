@@ -45,6 +45,8 @@ The first step is to add the HasLocks trait to the model of your resource. The H
 functionality on your model.
 
 ```php
+// Post.php
+
 use Kenepa\ResourceLock\Models\Concerns\HasLocks;
 
 class Post extends Model
@@ -64,6 +66,8 @@ The second step is to add the UsesResourceLock trait to your EditRecord page. Th
 locking function on your edit page.
 
 ```php
+// EditPost.php
+
 use Kenepa\ResourceLock\Resources\Pages\Concerns\UsesResourceLock;
 
 class EditPost extends EditRecord
@@ -81,13 +85,15 @@ a [simple modal](https://filamentphp.com/docs/2.x/admin/resources/getting-starte
 you'll need to use the UsesSimpleResourceLock trait instead.
 
 ```php
+// ManagePosts.php
+
 use Kenepa\ResourceLock\Resources\Pages\Concerns\UsesSimpleResourceLock;
 
-class ListExamples extends ManageRecords
+class ManagePosts extends ManageRecords
 {
     use UsesSimpleResourceLock;
 
-    protected static string $resource = ExampleResource::class;
+    protected static string $resource = PostResource::class;
 
 }
 ```
@@ -114,6 +120,7 @@ setting it to true allows you to specify either a Laravel Gate class or a permis
 the [Spatie Permissions package](https://github.com/spatie/laravel-permission).
 
 ```php
+// resource-lock.php
 
    /*
     |--------------------------------------------------------------------------
@@ -153,6 +160,8 @@ class you want to use. This will ensure that the ResourceLock functionality work
 implementation.
 
 ```php
+// resource-lock.php
+
  /*
     |--------------------------------------------------------------------------
     | Models
@@ -168,6 +177,56 @@ implementation.
         'User' => \App\Models\CustomUser::class,
          'ResourceLock' => \App\Models\CustomResourceLock::class,
     ],
+```
+
+### Displaying the user has locked the resource
+
+Use the ```display_resource_lock_owner``` within the ```resource-lock.php``` config to control whether or not the locked
+resource owner is
+displayed in the modal. Set the option to **true** to show the owner's username or other identifying information. The
+modal
+can be triggered by a button click or automatically when the resource is accessed.
+
+By default, the package displays the name of the user: ```$userModel->name```. However, if your user model doesn't have
+a name or you want to display a different identifier, you can create a custom action to overwrite the default behavior.
+
+This package uses actions which allows you to implement your own custom logic. An action class is nothing more than a
+simple class with a method that executes some
+logic. [Learn more about actions](https://freek.dev/2442-strategies-for-making-laravel-packages-customizable)
+
+To create a custom action, first create a file within your project and name
+it ```CustomGetResourceLockOwnerAction.php```, for
+example. In this file, create a new class that extends the ```GetResourceLockOwnerAction``` class and override the
+execute
+method to return the desired identifier. For example:
+
+```php
+// CustomGetResourceLockOwnerAction.php
+
+namespace App\Actions;
+
+use Kenepa\ResourceLock\Actions\GetResourceLockOwnerAction;
+
+class CustomResourceLockOwnerAction extends GetResourceLockOwnerAction
+{
+    public function execute($userModel): string|null
+    {
+        return $userModel->email;
+    }
+}
+```
+
+Next, register your custom action within the resource-lock.config file. Replace the default
+get_resource_lock_owner_action value with your custom action's class name. For example:
+
+```php
+// resource-lock.php
+
+    'actions' => [
+-       'get_resource_lock_owner_action' => \Kenepa\ResourceLock\Actions\GetResourceLockOwnerAction::class
++       'get_resource_lock_owner_action' => \Kenepa\ResourceLock\Actions\CustomGetResourceLockOwnerAction::class   
+    ],
+
 ```
 
 ### Overriding default functionality
@@ -224,7 +283,7 @@ php artisan vendor:publish --tag="resource-lock-views"
 
 - Locked status indicator for table rows
 - Polling
-- Displaying which users has locked a resource
+- Optimistic Locking
 
 ## Changelog
 
