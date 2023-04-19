@@ -179,7 +179,7 @@ implementation.
     ],
 ```
 
-### Displaying the user has locked the resource
+### Displaying the user who has locked the resource
 
 Use the ```display_resource_lock_owner``` within the ```resource-lock.php``` config to control whether or not the locked
 resource owner is
