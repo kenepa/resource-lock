@@ -1,4 +1,4 @@
-<div x-init="resourceLockObserverInit" class="bg-red-500">
+<div x-init="resourceLockObserverInit">
 
     <script>
         function resourceLockObserverInit() {
