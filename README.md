@@ -23,10 +23,16 @@ You can install the package via composer:
 composer require kenepa/resource-lock
 ```
 
-You can run the installation command to publish config files, migrations and run migrations (optional)
+Then run the installation command to publish and run migration(s)
 
 ```bash
 php artisan resource-lock:install
+```
+
+You can publish run the config (optional)
+
+```bash
+php artisan vendor:publish --tag=resource-lock-config
 ```
 
 ## Usage
