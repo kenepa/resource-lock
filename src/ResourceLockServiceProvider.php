@@ -27,7 +27,6 @@ class ResourceLockServiceProvider extends PluginServiceProvider
             ->hasMigration('create_resource_lock_table')
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
-                    ->publishConfigFile()
                     ->publishMigrations()
                     ->askToRunMigrations()
                     ->askToStarRepoOnGitHub('kenepa/resource-lock');
