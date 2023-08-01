@@ -1,5 +1,9 @@
 # Resoure Lock
 
+> **Warning**
+> Currently preparing this plugin for filament v3 on branch 3.x. Please use 2.x for filament v2.
+
+
 <a href="https://github.com/kenepa/resource-lock">
 <img style="width: 100%; max-width: 100%;" alt="filament-shield-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-log-banner.png" >
 </a>

@@ -2,15 +2,15 @@
 
 namespace Kenepa\ResourceLock;
 
-use Filament\Facades\Filament;
-use Filament\PluginServiceProvider;
+use Filament\Support\Facades\FilamentView;
 use Illuminate\Support\Facades\Blade;
 use Kenepa\ResourceLock\Resources\ResourceLockResource;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class ResourceLockServiceProvider extends PluginServiceProvider
+class ResourceLockServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'resource-lock';
 
@@ -39,8 +39,8 @@ class ResourceLockServiceProvider extends PluginServiceProvider
 
         Livewire::component('resource-lock-observer', Http\Livewire\ResourceLockObserver::class);
 
-        Filament::registerRenderHook(
-            'body.end',
+        FilamentView::registerRenderHook(
+            'panels::body.end',
             fn (): string => Blade::render('@livewire(\'resource-lock-observer\')'),
         );
     }

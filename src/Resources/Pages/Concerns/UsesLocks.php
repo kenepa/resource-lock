@@ -45,17 +45,23 @@ trait UsesLocks
     {
         $this->getResourceLockOwner();
 
-        $this->dispatchBrowserEvent('open-modal', [
-            'id' => 'resourceIsLockedNotice',
-            'returnUrl' => $this->resourceLockReturnUrl(),
-            'resourceLockOwner' => $this->resourceLockOwner,
-        ]);
+        $this->dispatch(
+            'open-modal',
+            id: 'resourceIsLockedNotice',
+            returnUrl: $this->resourceLockReturnUrl(),
+            resourceLockOwner: $this->resourceLockOwner
+        );
     }
 
     protected function closeLockedResourceModal(): void
     {
-        $this->dispatchBrowserEvent('close-modal', [
+        $this->dispatch('close-modal', [
             'id' => 'resourceIsLockedNotice',
         ]);
+
+        $this->dispatch(
+            'close-modal',
+            id: 'resourceIsLockedNotice'
+        );
     }
 }
