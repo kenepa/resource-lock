@@ -25,7 +25,7 @@ class ResourceLockPlugin implements Plugin
     {
         $panel
             ->resources([
-                ResourceLockResource::class
+                ResourceLockResource::class,
             ]);
     }
 

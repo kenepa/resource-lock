@@ -24,5 +24,4 @@ class ResourceLockServiceProvider extends PackageServiceProvider
                     ->askToStarRepoOnGitHub('kenepa/resource-lock');
             });
     }
-
 }
