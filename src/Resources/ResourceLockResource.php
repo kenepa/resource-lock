@@ -2,12 +2,11 @@
 
 namespace Kenepa\ResourceLock\Resources;
 
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use Illuminate\Support\Facades\Gate;
 use Kenepa\ResourceLock\Models\ResourceLock;
 use Kenepa\ResourceLock\Resources\ResourceLockResource\ManageResourceLocks;
@@ -26,7 +25,7 @@ class ResourceLockResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Table $table): Tables\Table
     {
         return $table
             ->columns([
@@ -36,7 +35,8 @@ class ResourceLockResource extends Resource
                 TextColumn::make('lockable_type'),
                 TextColumn::make('created_at'),
                 TextColumn::make('updated_at'),
-                BadgeColumn::make('updated_at')->label('Expired')
+                TextColumn::make('updated_at')->label('Expired')
+                    ->badge()
                     ->color(static function ($record): string {
                         if ($record->isExpired()) {
                             return 'warning';
@@ -112,7 +112,7 @@ class ResourceLockResource extends Resource
         return config('resource-lock.manager.navigation_group');
     }
 
-    protected static function getNavigationSort(): ?int
+    public static function getNavigationSort(): ?int
     {
         return config('resource-lock.manager.navigation_sort');
     }

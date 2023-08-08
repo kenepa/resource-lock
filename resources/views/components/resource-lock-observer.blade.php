@@ -2,16 +2,16 @@
 
     <script>
         function resourceLockObserverInit() {
-            Livewire.emit('resourceLockObserver::init')
+            Livewire.dispatch('resourceLockObserver::init')
         }
 
         window.onbeforeunload = function () {
-            Livewire.emit('resourceLockObserver::unload')
+            Livewire.dispatch('resourceLockObserver::unload')
         };
 
         window.addEventListener('close-modal', event => {
             if (event.detail.id.endsWith('-table-action')) {
-                Livewire.emit('resourceLockObserver::unload')
+                Livewire.dispatch('resourceLockObserver::unload')
             }
         })
     </script>
@@ -37,19 +37,19 @@
         <div x-data="{url: '/'}" @open-modal.window="(event) => { url = event.detail.returnUrl}" class="flex flex-col justify-center space-y-2">
 
             @if ($isAllowedToUnlock)
-                <button wire:click="$emit('resourceLockObserver::unlock')" class="filament-button filament-button-size-md inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset min-h-[2.25rem] px-4 text-sm text-white shadow focus:ring-white border-transparent bg-danger-600 hover:bg-danger-500 focus:bg-danger-700 focus:ring-offset-danger-700 filament-page-button-action">
+                <button wire:click="$dispatch('resourceLockObserver::unlock')" style="--c-400:var(--danger-400);--c-500:var(--danger-500);--c-600:var(--danger-600);" class="fi-btn fi-btn-size-md relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus:ring-2 disabled:pointer-events-none disabled:opacity-70 rounded-lg fi-btn-color-danger gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 dark:bg-custom-500 dark:hover:bg-custom-400 focus:ring-custom-500/50 dark:focus:ring-custom-400/50 fi-ac-btn-action">
                     {{ __('resource-lock::modal.unlock_button') }}
                 </button>
             @endif
 
-            <a class="block filament-button filament-button-size-md inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset min-h-[2.25rem] px-4 text-sm text-white shadow focus:ring-white border-transparent bg-primary-600 hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700 filament-page-button-action"
+            <a style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
+               class="fi-btn fi-btn-size-md relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus:ring-2 disabled:pointer-events-none disabled:opacity-70 rounded-lg fi-btn-color-primary gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 dark:bg-custom-500 dark:hover:bg-custom-400 focus:ring-custom-500/50 dark:focus:ring-custom-400/50 fi-ac-btn-action"
                :href="url">
-
-            <span>
-                {{ __('resource-lock::modal.return_button') }}
-            </span>
-
+                <span>
+                    {{ __('resource-lock::modal.return_button') }}
+                </span>
             </a>
+
         </div>
     </x-filament::modal>
 </div>

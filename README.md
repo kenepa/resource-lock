@@ -17,6 +17,9 @@ saves or discards their changes.
 
 ## Installation
 
+> Version 1.x supports Filament v2.
+> Version 2.x supports Filament v3.
+
 You can install the package via composer:
 
 ```bash
@@ -27,6 +30,19 @@ Then run the installation command to publish and run migration(s)
 
 ```bash
 php artisan resource-lock:install
+```
+
+Register plugin with a panel
+```php
+use Kenepa\ResourceLock\ResourceLockPlugin;
+use Filament\Panel;
+ 
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->plugin(ResourceLockPlugin::make());
+}
 ```
 
 You can publish run the config (optional)
@@ -139,7 +155,7 @@ the [Spatie Permissions package](https://github.com/spatie/laravel-permission).
 
     'unlocker' => [
         'limited_access' => true,
-        'gate' => 'unlock-resource'
+        'gate' => 'unlock'
     ],
 ```
 
@@ -148,12 +164,13 @@ Example
 ```php
 
 // Example using gates
-Gate::define('unlock-resource', function (User $user, Post $post) {
+// More info about gates: https://laravel.com/docs/authorization#writing-gates
+Gate::define('unlock', function (User $user, Post $post) {
   return $user->email === 'admin@mail.com';
 });
 
 // Example using spatie permission package
-Permission::create(['name' => 'unlock-resource']);
+Permission::create(['name' => 'unlock']);
 ```
 
 ### Using custom models
