@@ -1,7 +1,7 @@
 # Resoure Lock
 
-<a href="https://github.com/kenepa/resource-lock">
-<img style="width: 100%; max-width: 100%;" alt="filament-shield-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-log-banner.png" >
+<a href="https://github.com/kenepa/resource-lock" class="filament-hidden">
+<img style="width: 100%; max-width: 100%;" alt="filament-resource-lock-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-log-banner.png" >
 </a>
 
 
@@ -13,7 +13,7 @@ user begins editing a resource, Filament Resource Lock automatically locks the r
 editing it at the same time. The resource will be automatically unlocked after a set period of time, or when the user
 saves or discards their changes.
 
-<img style="width: 100%; max-width: 100%;" alt="filament-shield-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-lock-demo.gif" >
+<img style="width: 100%; max-width: 100%;" alt="filament-resource-lock-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-lock-demo.gif" >
 
 ## Installation
 
@@ -123,7 +123,7 @@ configure the locking functionality.
 
 ## Resource Lock manager
 
-<img style="width: 100%; max-width: 100%;" alt="filament-shield-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-lock-manager.png" >
+<img style="width: 100%; max-width: 100%;" alt="filament-resource-lock-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-lock-manager.png" >
 
 The package also provides a simple way to manage and view all your active and expired locks within your app. And it also
 provides a way to quickly unlock all resources or specific locks.
@@ -132,7 +132,7 @@ provides a way to quickly unlock all resources or specific locks.
 
 ### Access
 
-<img style="width: 100%; max-width: 100%;" alt="filament-shield-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-locked.png" >
+<img style="width: 100%; max-width: 100%;" alt="filament-resource-lock-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-locked.png" >
 
 You can restrict the access to the **Unlock** button or to the resource manager by adjusting the access variable.
 Enabling the "limited" key and
