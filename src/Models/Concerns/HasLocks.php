@@ -27,7 +27,8 @@ trait HasLocks
     public function lock(): bool
     {
         if (! $this->isLocked()) {
-            $resourceLock = new ResourceLock;
+            $resourceLockModel = config('resource-lock.models.ResourceLock', ResourceLock::class);
+            $resourceLock = new $resourceLockModel;
             $resourceLock->user_id = auth()->user()->id;
             $this->resourceLock()->save($resourceLock);
 
