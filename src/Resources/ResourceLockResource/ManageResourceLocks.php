@@ -16,7 +16,7 @@ class ManageResourceLocks extends ManageRecords
         return [
             Action::make(__('resource-lock::manager.unlock_all'))
                 ->icon('heroicon-o-lock-open')
-                ->action(fn () => ResourceLock::truncate())
+                ->action(fn () => config('resource-lock.models.ResourceLock', ResourceLock::class)::truncate())
                 ->requiresConfirmation(),
         ];
     }
