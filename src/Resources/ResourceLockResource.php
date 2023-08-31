@@ -13,10 +13,13 @@ use Kenepa\ResourceLock\Resources\ResourceLockResource\ManageResourceLocks;
 
 class ResourceLockResource extends Resource
 {
-    protected static ?string $model = ResourceLock::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
 
+    public static function getModel(): string
+    {
+        return config('resource-lock.models.ResourceLock', ResourceLock::class);
+    }
+    
     public static function form(Form $form): Form
     {
         return $form
