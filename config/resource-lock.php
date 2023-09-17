@@ -61,6 +61,7 @@ return [
     */
 
     'manager' => [
+        'navigation_badge' => false,
         'navigation_label' => 'Resource Lock Manager',
         'navigation_group' => 'Settings',
         'navigation_sort' => 1,

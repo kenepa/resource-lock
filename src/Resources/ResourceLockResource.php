@@ -105,6 +105,15 @@ class ResourceLockResource extends Resource
         return true;
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        if (! config('resource-lock.manager.navigation_badge')) {
+            return null;
+        }
+
+        return static::getModel()::count();
+    }
+
     public static function getNavigationLabel(): string
     {
         return config('resource-lock.manager.navigation_label', 'Resource Lock Manager');
