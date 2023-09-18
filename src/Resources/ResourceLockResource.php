@@ -17,7 +17,7 @@ class ResourceLockResource extends Resource
 
     public static function getModel(): string
     {
-        return __(config('resource-lock.models.ResourceLock', ResourceLock::class));
+        return config('resource-lock.models.ResourceLock', ResourceLock::class);
     }
 
     public static function getPluralLabel(): string
