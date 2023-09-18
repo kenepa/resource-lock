@@ -19,6 +19,11 @@ class ResourceLockResource extends Resource
     {
         return config('resource-lock.models.ResourceLock', ResourceLock::class);
     }
+
+    public static function getPluralLabel(): string
+    {
+        return __(config('resource-lock.manager.plural_label', 'Resource Locks'));
+    }
     
     public static function form(Form $form): Form
     {
@@ -32,13 +37,13 @@ class ResourceLockResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->label('Lock ID'),
-                TextColumn::make('user.id')->label('User ID'),
-                TextColumn::make('lockable.id')->label('Lockable ID'),
-                TextColumn::make('lockable_type'),
-                TextColumn::make('created_at'),
-                TextColumn::make('updated_at'),
-                TextColumn::make('updated_at')->label('Expired')
+                TextColumn::make('id')->label(__('Lock ID')),
+                TextColumn::make('user.id')->label(__('User ID')),
+                TextColumn::make('lockable.id')->label(__('Lockable ID')),
+                TextColumn::make('lockable_type')->label(__('Lockable type')),
+                TextColumn::make('created_at')->label(__('Created at')),
+                TextColumn::make('updated_at')->label(__('Updated at')),
+                TextColumn::make('updated_at')->label(__('Expired'))
                     ->badge()
                     ->color(static function ($record): string {
                         if ($record->isExpired()) {

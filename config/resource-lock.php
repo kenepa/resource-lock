@@ -63,6 +63,7 @@ return [
     'manager' => [
         'navigation_badge' => false,
         'navigation_label' => 'Resource Lock Manager',
+        'plural_label' => 'Resource Locks',
         'navigation_group' => 'Settings',
         'navigation_sort' => 1,
         'limited_access' => false,
