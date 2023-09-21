@@ -17,10 +17,11 @@
     </script>
 
     <x-filament::modal
-            id="resourceIsLockedNotice"
-            :closeButton="false"
-            :disabled="true"
-            :closeByClickingAway="false"
+        id="resourceIsLockedNotice"
+        displayClasses="block"
+        :closeButton="false"
+        :disabled="true"
+        :closeByClickingAway="false"
     >
         <div x-data="{ resourceLockOwner: null}"  @open-modal.window="(event) => { resourceLockOwner = event.detail.resourceLockOwner}">
             <div class="flex justify-center ">
