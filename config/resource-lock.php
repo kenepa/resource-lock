@@ -62,6 +62,7 @@ return [
 
     'manager' => [
         'navigation_badge' => false,
+        'navigation_icon' => 'heroicon-o-lock-closed',
         'navigation_label' => 'Resource Lock Manager',
         'plural_label' => 'Resource Locks',
         'navigation_group' => 'Settings',
