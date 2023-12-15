@@ -13,7 +13,13 @@ use Kenepa\ResourceLock\Resources\ResourceLockResource\ManageResourceLocks;
 
 class ResourceLockResource extends Resource
 {
-    protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
+    /**
+     * @return string|null
+     */
+    public static function getNavigationIcon(): ?string
+    {
+        return __(config('resource-lock.manager.navigation_icon', 'heroicon-o-lock-closed'));
+    }
 
     public static function getModel(): string
     {
