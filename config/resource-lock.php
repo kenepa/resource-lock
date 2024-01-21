@@ -20,6 +20,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Resource
+    |--------------------------------------------------------------------------
+    |
+    | The resource configuration specifies the class that represent your application's
+    | resource.
+    |
+    */
+    'resource' => [
+        'class' => \Kenepa\ResourceLock\Resources\ResourceLockResource::class
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Resource Unlocker Button
     |--------------------------------------------------------------------------
     |
