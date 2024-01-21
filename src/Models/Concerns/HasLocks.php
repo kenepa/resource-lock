@@ -28,8 +28,9 @@ trait HasLocks
     {
         if (! $this->isLocked()) {
             $resourceLockModel = config('resource-lock.models.ResourceLock', ResourceLock::class);
+            $guard = $this->getCurrentAuthGuardName();
             $resourceLock = new $resourceLockModel;
-            $resourceLock->user_id = auth()->user()->id;
+            $resourceLock->user_id = auth()->guard($guard)->user()->id;
             $this->resourceLock()->save($resourceLock);
 
             return true;
@@ -46,8 +47,8 @@ trait HasLocks
     public function isLockedByCurrentUser(): bool
     {
         $resourceLock = $this->resourceLock;
-
-        if ($resourceLock && $resourceLock->user->id === auth()->user()->id) {
+        $guard = $this->getCurrentAuthGuardName();
+        if ($resourceLock && $resourceLock->user->id === auth()->guard($guard)->user()->id) {
             return true;
         }
 
@@ -110,6 +111,25 @@ trait HasLocks
      */
     public function lockCreatedByCurrentUser(): bool
     {
-        return $this->resourceLock->user_id === auth()->user()->id;
+        $guard = $this->getCurrentAuthGuardName();
+        return $this->resourceLock->user_id === auth()->guard($guard)->user()->id;
+    }
+
+    /**
+     * Finds and returns the current guard of the auth user.
+     *
+     * @return array|null
+     */
+    private function getCurrentAuthGuardName(): array|null
+    {
+        $guards = array_keys(config('auth.guards'));
+
+        foreach ($guards as $guard) {
+            if (app()['auth']->guard($guard)->check()) {
+                return $guard;
+            }
+        }
+
+        return null;
     }
 }
