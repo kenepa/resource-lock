@@ -17,13 +17,13 @@ trait UsesSimpleResourceLock
     public function bootUsesSimpleResourceLock(): void
     {
         $this->listeners = array_merge($this->listeners, [
+            'resourceLockObserver::init' => 'resourceLockObserverInit',
             'resourceLockObserver::unload' => 'resourceLockObserverUnload',
             'resourceLockObserver::unlock' => 'resourceLockObserverUnlock',
-            $this->id . '-table-action' => 'test',
         ]);
     }
 
-    public function mountTableAction(string $name, ?string $record = null)
+    public function mountTableAction(string $name, ?string $record = null): mixed
     {
         parent::mountTableAction($name, $record);
         $this->resourceRecord = $this->getMountedTableActionRecord();
@@ -31,9 +31,11 @@ trait UsesSimpleResourceLock
         $this->returnUrl = $this->getResource()::getUrl('index');
         $this->checkIfResourceLockHasExpired($this->resourceRecord);
         $this->lockResource($this->resourceRecord);
+
+        return null;
     }
 
-    public function callMountedTableAction(?string $arguments = null)
+    public function callMountedTableAction(array $arguments = []): mixed
     {
         if (config('resource-lock.check_locks_before_saving', true)) {
             $this->resourceRecord->refresh();
@@ -41,10 +43,12 @@ trait UsesSimpleResourceLock
                 $this->checkIfResourceLockHasExpired($this->resourceRecord);
                 $this->lockResource($this->resourceRecord);
 
-                return;
+                return null;
             }
         }
         parent::callMountedTableAction($arguments);
+
+        return null;
     }
 
     public function resourceLockObserverUnload()
