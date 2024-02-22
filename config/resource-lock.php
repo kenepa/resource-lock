@@ -20,6 +20,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Filament Resource
+    |--------------------------------------------------------------------------
+    |
+    | The resource lock filament resource displays all the current locks in place.
+    | You are able to replace the resource Lock with your own resource class.
+    |
+    */
+    'resource' => [
+        'class' => \Kenepa\ResourceLock\Resources\ResourceLockResource::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Resource Unlocker Button
     |--------------------------------------------------------------------------
     |
