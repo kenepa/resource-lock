@@ -3,6 +3,7 @@
 namespace Kenepa\ResourceLock\Models\Concerns;
 
 use Carbon\Carbon;
+use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Kenepa\ResourceLock\Models\ResourceLock;
 
@@ -48,6 +49,7 @@ trait HasLocks
     {
         $resourceLock = $this->resourceLock;
         $guard = $this->getCurrentAuthGuardName();
+
         if ($resourceLock && $resourceLock->user->id === auth()->guard($guard)->user()->id) {
             return true;
         }
@@ -112,6 +114,7 @@ trait HasLocks
     public function lockCreatedByCurrentUser(): bool
     {
         $guard = $this->getCurrentAuthGuardName();
+
         return $this->resourceLock->user_id === auth()->guard($guard)->user()->id;
     }
 
@@ -120,16 +123,8 @@ trait HasLocks
      *
      * @return array|null
      */
-    private function getCurrentAuthGuardName(): array|null
+    private function getCurrentAuthGuardName(): string|null
     {
-        $guards = array_keys(config('auth.guards'));
-
-        foreach ($guards as $guard) {
-            if (app()['auth']->guard($guard)->check()) {
-                return $guard;
-            }
-        }
-
-        return null;
+        return Filament::getCurrentPanel()->auth()->name;
     }
 }
