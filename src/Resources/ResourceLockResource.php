@@ -13,9 +13,6 @@ use Kenepa\ResourceLock\Resources\ResourceLockResource\ManageResourceLocks;
 
 class ResourceLockResource extends Resource
 {
-    /**
-     * @return string|null
-     */
     public static function getNavigationIcon(): ?string
     {
         return __(config('resource-lock.manager.navigation_icon', 'heroicon-o-lock-closed'));
@@ -30,7 +27,7 @@ class ResourceLockResource extends Resource
     {
         return __(config('resource-lock.manager.plural_label', 'Resource Locks'));
     }
-    
+
     public static function form(Form $form): Form
     {
         return $form
