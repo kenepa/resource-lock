@@ -20,11 +20,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Resource
+    | Filament Resource
     |--------------------------------------------------------------------------
     |
-    | The resource configuration specifies the class that represent your application's
-    | resource.
+    | The resource lock filament resource displays all the current locks in place.
+    | You are able to replace the resource Lock with your own resource class.
     |
     */
     'resource' => [
