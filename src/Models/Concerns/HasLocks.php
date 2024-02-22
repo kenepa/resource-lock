@@ -125,6 +125,10 @@ trait HasLocks
      */
     private function getCurrentAuthGuardName(): string|null
     {
+        if (Filament::getCurrentPanel() === null) {
+            return null;
+        }
+
         return Filament::getCurrentPanel()->auth()->name;
     }
 }
