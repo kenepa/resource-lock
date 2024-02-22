@@ -3,6 +3,7 @@
 namespace Kenepa\ResourceLock\Models\Concerns;
 
 use Carbon\Carbon;
+use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Kenepa\ResourceLock\Models\ResourceLock;
 
@@ -28,8 +29,9 @@ trait HasLocks
     {
         if (! $this->isLocked()) {
             $resourceLockModel = config('resource-lock.models.ResourceLock', ResourceLock::class);
+            $guard = $this->getCurrentAuthGuardName();
             $resourceLock = new $resourceLockModel;
-            $resourceLock->user_id = auth()->user()->id;
+            $resourceLock->user_id = auth()->guard($guard)->user()->id;
             $this->resourceLock()->save($resourceLock);
 
             return true;
@@ -46,8 +48,9 @@ trait HasLocks
     public function isLockedByCurrentUser(): bool
     {
         $resourceLock = $this->resourceLock;
+        $guard = $this->getCurrentAuthGuardName();
 
-        if ($resourceLock && $resourceLock->user->id === auth()->user()->id) {
+        if ($resourceLock && $resourceLock->user->id === auth()->guard($guard)->user()->id) {
             return true;
         }
 
@@ -110,6 +113,22 @@ trait HasLocks
      */
     public function lockCreatedByCurrentUser(): bool
     {
-        return $this->resourceLock->user_id === auth()->user()->id;
+        $guard = $this->getCurrentAuthGuardName();
+
+        return $this->resourceLock->user_id === auth()->guard($guard)->user()->id;
+    }
+
+    /**
+     * Finds and returns the current guard of the auth user.
+     *
+     * @return array|null
+     */
+    private function getCurrentAuthGuardName(): string|null
+    {
+        if (Filament::getCurrentPanel() === null) {
+            return null;
+        }
+
+        return Filament::getCurrentPanel()->auth()->name;
     }
 }
