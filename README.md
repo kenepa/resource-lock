@@ -24,7 +24,7 @@ saves or discards their changes.
 
 
 
-> Notice - Upgrading to Version 2.1.x  
+> Notice - Upgrading to Version 2.1.x :  
 > In case you have published the config, make sure to update the following in your config:
 > ```php
 >    'resource' => [
