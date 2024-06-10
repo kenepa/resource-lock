@@ -23,6 +23,15 @@ saves or discards their changes.
 | 2.x          | 3.x             | \> 8.1      |
 
 
+
+> Notice: Upgrading to Version 2.1.x
+> In case you have published the config, make sure to update the following in your config:
+> ```php
+>    'resource' => [
+>        'class' => \Kenepa\ResourceLock\Resources\LockResource::class,
+>    ],
+> ```
+
 You can install the package via composer:
 
 ```bash
@@ -302,6 +311,8 @@ Optionally, you can publish the views using
 ```bash
 php artisan vendor:publish --tag="resource-lock-views"
 ```
+
+## T
 
 ## Coming soon
 
