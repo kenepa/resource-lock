@@ -2,7 +2,14 @@
 
 namespace Kenepa\ResourceLock\Tests;
 
+use Filament\Actions\ActionsServiceProvider;
 use Filament\FilamentServiceProvider;
+use Filament\Forms\FormsServiceProvider;
+use Filament\Infolists\InfolistsServiceProvider;
+use Filament\Notifications\NotificationsServiceProvider;
+use Filament\Support\SupportServiceProvider;
+use Filament\Tables\TablesServiceProvider;
+use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Kenepa\ResourceLock\ResourceLockServiceProvider;
 use Kenepa\ResourceLock\Tests\Fixtures\AdminPanelProvider;
@@ -17,7 +24,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Kenepa\\ResourceLock\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn(string $modelName) => 'Kenepa\\ResourceLock\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
@@ -40,13 +47,22 @@ class TestCase extends Orchestra
 
         $migration = include __DIR__ . '/Migrations/user_migration.php';
         $migration->up();
+
+        view()->addLocation(__DIR__ . '/Fixtures/views');
     }
 
     protected function getPackageProviders($app)
     {
         return [
             LivewireServiceProvider::class,
+            SupportServiceProvider::class,
+            ActionsServiceProvider::class,
+            FormsServiceProvider::class,
+            InfolistsServiceProvider::class,
+            NotificationsServiceProvider::class,
+            TablesServiceProvider::class,
             FilamentServiceProvider::class,
+            WidgetsServiceProvider::class,
             ResourceLockServiceProvider::class,
             AdminPanelProvider::class,
         ];
