@@ -1,4 +1,4 @@
-# Resoure Lock
+# Resource Lock
 
 <a href="https://github.com/kenepa/resource-lock" class="filament-hidden">
 <img style="width: 100%; max-width: 100%;" alt="filament-resource-lock-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-log-banner.png" >
@@ -311,8 +311,6 @@ Optionally, you can publish the views using
 ```bash
 php artisan vendor:publish --tag="resource-lock-views"
 ```
-
-## T
 
 ## Coming soon
 
