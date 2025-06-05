@@ -3,6 +3,7 @@
 namespace Kenepa\ResourceLock\Http\Livewire;
 
 use Illuminate\Support\Facades\Gate;
+use Kenepa\ResourceLock\ResourceLockPlugin;
 use Livewire\Component;
 
 class ResourceLockObserver extends Component
@@ -16,9 +17,9 @@ class ResourceLockObserver extends Component
 
     public function mount()
     {
-        if (! config('resource-lock.unlocker.limited_access')) {
+        if (! ResourceLockPlugin::get()->shouldLimitUnlockerAccess()) {
             $this->isAllowedToUnlock = true;
-        } elseif (config('resource-lock.unlocker.limited_access') && Gate::allows(config('resource-lock.unlocker.gate'))) {
+        } elseif (ResourceLockPlugin::get()->shouldLimitUnlockerAccess() && Gate::allows(ResourceLockPlugin::get()->getUnlockerGate())) {
             $this->isAllowedToUnlock = true;
         }
     }

@@ -2,6 +2,8 @@
 
 namespace Kenepa\ResourceLock\Resources\Pages\Concerns;
 
+use Kenepa\ResourceLock\ResourceLockPlugin;
+
 /*
  * The Resource Lock Trait provides several functions to an Edit Resource page to lock & unlock resources.
  * Beware that you model needs to also use the App\Models\Concerns\ResourceLock concern.
@@ -68,7 +70,7 @@ trait UsesResourceLock
      */
     public function save(bool $shouldRedirect = true, bool $shouldSendSavedNotification = true): void
     {
-        if (config('resource-lock.check_locks_before_saving', true)) {
+        if (ResourceLockPlugin::get()->shouldCheckLocksBeforeSaving()) {
             $this->record->refresh();
             if ($this->record->isLocked() && ! $this->record->isLockedByCurrentUser()) {
                 $this->checkIfResourceLockHasExpired($this->record);
@@ -83,8 +85,8 @@ trait UsesResourceLock
 
     public function getResourceLockOwner(): void
     {
-        if (config('resource-lock.lock_notice.display_resource_lock_owner', false)) {
-            $getResourceLockOwnerActionClass = config('resource-lock.actions.get_resource_lock_owner_action');
+        if (ResourceLockPlugin::get()->shouldDisplayResourceLockOwner()) {
+            $getResourceLockOwnerActionClass = ResourceLockPlugin::get()->getResourceLockOwnerAction();
             $getResourceLockOwnerAction = app($getResourceLockOwnerActionClass);
 
             $this->resourceLockOwner = $getResourceLockOwnerAction->execute($this->record->resourceLock->user);

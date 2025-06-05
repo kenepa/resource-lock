@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Kenepa\ResourceLock\Models\ResourceLock;
+use Kenepa\ResourceLock\ResourceLockPlugin;
 
 /**
  * The HasLocks trait provides several functions to models to handle locking and unlocking of records.
@@ -17,7 +18,7 @@ trait HasLocks
      */
     public function resourceLock(): MorphOne
     {
-        return $this->morphOne(config('resource-lock.models.ResourceLock', ResourceLock::class), 'lockable');
+        return $this->morphOne(ResourceLockPlugin::get()->getResourceLockModel(), 'lockable');
     }
 
     /**
@@ -28,7 +29,7 @@ trait HasLocks
     public function lock(): bool
     {
         if (! $this->isLocked()) {
-            $resourceLockModel = config('resource-lock.models.ResourceLock', ResourceLock::class);
+            $resourceLockModel = ResourceLockPlugin::get()->getResourceLockModel();
             $guard = $this->getCurrentAuthGuardName();
             $resourceLock = new $resourceLockModel;
             $resourceLock->user_id = auth()->guard($guard)->user()->id;
@@ -82,7 +83,7 @@ trait HasLocks
             return false;
         }
 
-        $expiredDate = (new Carbon($this->resourceLock->updated_at))->addMinutes(config('resource-lock.lock_timeout'));
+        $expiredDate = (new Carbon($this->resourceLock->updated_at))->addMinutes(ResourceLockPlugin::get()->getLockTimeout());
 
         return Carbon::now()->greaterThan($expiredDate);
     }
