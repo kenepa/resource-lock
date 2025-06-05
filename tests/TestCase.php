@@ -5,11 +5,13 @@ namespace Kenepa\ResourceLock\Tests;
 use Filament\FilamentServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Kenepa\ResourceLock\ResourceLockServiceProvider;
+use Kenepa\ResourceLock\Tests\Fixtures\AdminPanelProvider;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -46,6 +48,7 @@ class TestCase extends Orchestra
             LivewireServiceProvider::class,
             FilamentServiceProvider::class,
             ResourceLockServiceProvider::class,
+            AdminPanelProvider::class,
         ];
     }
 }
