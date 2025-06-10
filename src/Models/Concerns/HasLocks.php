@@ -91,7 +91,7 @@ trait HasLocks
     /**
      * Unlock the resource.
      *
-     * @param  bool  $force Whether to force unlock or not.
+     * @param  bool  $force  Whether to force unlock or not.
      * @return bool Returns true if unlocking the resource was successful, false otherwise.
      */
     public function unlock(bool $force = false): bool
@@ -124,7 +124,7 @@ trait HasLocks
      *
      * @return array|null
      */
-    private function getCurrentAuthGuardName(): string|null
+    private function getCurrentAuthGuardName(): ?string
     {
         if (Filament::getCurrentPanel() === null) {
             return null;

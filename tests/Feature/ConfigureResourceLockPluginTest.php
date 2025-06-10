@@ -7,70 +7,74 @@ use Kenepa\ResourceLock\ResourceLockPlugin;
 function getResourceLockNavigationItem($panel, string $group = 'Settings', string $label = 'Resource Lock Manager')
 {
     $navigationItems = $panel->getNavigation();
-    
+
     return $navigationItems[$group]->getItems()[$label];
 }
 
-it('registers navigation item in panel by default', function () {
-    $panel = filament()->getDefaultPanel();
-    $resourceLockNavigationItem = getResourceLockNavigationItem($panel);
+describe('Navigation Registration', function () {
+    it('registers navigation item in panel by default', function () {
+        $panel = filament()->getDefaultPanel();
+        $resourceLockNavigationItem = getResourceLockNavigationItem($panel);
 
-    expect($resourceLockNavigationItem->isVisible())->toBeTrue();
+        expect($resourceLockNavigationItem->isVisible())->toBeTrue();
+    });
+
+    it('hides navigation item when configured to be hidden', function () {
+        $panel = filament()->getDefaultPanel();
+        $panel->plugin(ResourceLockPlugin::make()
+            ->registerNavigation(false));
+        $navigationItems = $panel->getNavigation();
+
+        expect($navigationItems)->toBeEmpty();
+    });
 });
 
-it('hides navigation item when configured to be hidden', function () {
-    $panel = filament()->getDefaultPanel();
-    $panel->plugin(ResourceLockPlugin::make()
-        ->registerNavigation(false));
-    $navigationItems = $panel->getNavigation();
+describe('Navigation Customization', function () {
+    it('uses custom navigation label when configured', function () {
+        $customLabel = 'Custom Lock Manager';
 
-    expect($navigationItems)->toBeEmpty();
-});
+        $panel = filament()->getDefaultPanel();
+        $panel->plugin(ResourceLockPlugin::make()
+            ->navigationLabel($customLabel));
 
-it('uses custom navigation label when configured', function () {
-    $customLabel = 'Custom Lock Manager';
+        $resourceLockNavigationItem = getResourceLockNavigationItem($panel, 'Settings', $customLabel);
 
-    $panel = filament()->getDefaultPanel();
-    $panel->plugin(ResourceLockPlugin::make()
-        ->navigationLabel($customLabel));
+        expect($resourceLockNavigationItem->getLabel())->toBe($customLabel);
+    });
 
-    $resourceLockNavigationItem = getResourceLockNavigationItem($panel, 'Settings', $customLabel);
+    it('uses custom navigation icon when configured', function () {
+        $customIcon = 'heroicon-o-shield-check';
 
-    expect($resourceLockNavigationItem->getLabel())->toBe($customLabel);
-});
+        $panel = filament()->getDefaultPanel();
+        $panel->plugin(ResourceLockPlugin::make()
+            ->navigationIcon($customIcon));
 
-it('uses custom navigation icon when configured', function () {
-    $customIcon = 'heroicon-o-shield-check';
+        $resourceLockNavigationItem = getResourceLockNavigationItem($panel);
 
-    $panel = filament()->getDefaultPanel();
-    $panel->plugin(ResourceLockPlugin::make()
-        ->navigationIcon($customIcon));
+        expect($resourceLockNavigationItem->getIcon())->toBe($customIcon);
+    });
 
-    $resourceLockNavigationItem = getResourceLockNavigationItem($panel);
+    it('uses custom navigation group when configured', function () {
+        $customGroup = 'Custom Settings';
 
-    expect($resourceLockNavigationItem->getIcon())->toBe($customIcon);
-});
+        $panel = filament()->getDefaultPanel();
+        $panel->plugin(ResourceLockPlugin::make()
+            ->navigationGroup($customGroup));
 
-it('uses custom navigation group when configured', function () {
-    $customGroup = 'Custom Settings';
+        $resourceLockNavigationItem = getResourceLockNavigationItem($panel, $customGroup);
 
-    $panel = filament()->getDefaultPanel();
-    $panel->plugin(ResourceLockPlugin::make()
-        ->navigationGroup($customGroup));
+        expect($resourceLockNavigationItem)->not->toBeNull();
+    });
 
-    $resourceLockNavigationItem = getResourceLockNavigationItem($panel, $customGroup);
+    it('uses custom navigation sort when configured', function () {
+        $customSort = 5;
 
-    expect($resourceLockNavigationItem)->not->toBeNull();
-});
+        $panel = filament()->getDefaultPanel();
+        $panel->plugin(ResourceLockPlugin::make()
+            ->navigationSort($customSort));
 
-it('uses custom navigation sort when configured', function () {
-    $customSort = 5;
+        $resourceLockNavigationItem = getResourceLockNavigationItem($panel);
 
-    $panel = filament()->getDefaultPanel();
-    $panel->plugin(ResourceLockPlugin::make()
-        ->navigationSort($customSort));
-
-    $resourceLockNavigationItem = getResourceLockNavigationItem($panel);
-
-    expect($resourceLockNavigationItem->getSort())->toBe($customSort);
+        expect($resourceLockNavigationItem->getSort())->toBe($customSort);
+    });
 });

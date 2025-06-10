@@ -21,13 +21,16 @@ trait UsesLocks
     {
         $this->resourceLockType = class_basename($record);
 
-        if ($record->isLockedByCurrentUser()) {
-            $record->lock();
-        } elseif ($record->isLocked()) {
+        if ($this->isLockedByOtherUser($record)) {
             $this->openLockedResourceModal();
         } else {
             $record->lock();
         }
+    }
+
+    public function isLockedByOtherUser($record): bool
+    {
+        return $record->isLocked() && ! $record->isLockedByCurrentUser();
     }
 
     public function resourceLockReturnUrl()
