@@ -6,7 +6,6 @@ use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Filament\Support\Facades\FilamentView;
 use Illuminate\Support\Facades\Blade;
-use Kenepa\ResourceLock\Actions\GetResourceLockOwnerAction;
 use Kenepa\ResourceLock\Models\ResourceLock;
 use Kenepa\ResourceLock\Resources\LockResource;
 use Livewire\Livewire;
@@ -33,26 +32,20 @@ class ResourceLockPlugin implements Plugin
 
     protected ?bool $shouldRegisterNavigation = null;
 
-    // Unlocker configuration
     protected ?bool $unlockerLimitedAccess = null;
 
     protected ?string $unlockerGate = null;
 
-    // Resource configuration
     protected ?string $resourceClass = null;
 
-    // Models configuration
-    protected ?string $userModel = null;
+    protected ?object $userModel = null;
 
-    protected ?string $resourceLockModel = null;
+    protected ?object $resourceLockModel = null;
 
-    // Lock timeout configuration
     protected ?int $lockTimeout = null;
 
-    // Check locks before saving
     protected ?bool $checkLocksBeforeSaving = null;
 
-    // Actions configuration
     protected ?string $resourceLockOwnerAction = null;
 
     public static function make(): static
@@ -87,7 +80,7 @@ class ResourceLockPlugin implements Plugin
 
         FilamentView::registerRenderHook(
             'panels::body.end',
-            fn(): string => Blade::render('@livewire(\'resource-lock-observer\')'),
+            fn (): string => Blade::render('@livewire(\'resource-lock-observer\')'),
         );
     }
 
@@ -211,7 +204,6 @@ class ResourceLockPlugin implements Plugin
         return $this->shouldRegisterNavigation ?? config('resource-lock.manager.should_register_navigation', true);
     }
 
-    // Unlocker configuration methods
     public function unlockerLimitedAccess(bool $limited = true): static
     {
         $this->unlockerLimitedAccess = $limited;
@@ -236,7 +228,6 @@ class ResourceLockPlugin implements Plugin
         return $this->unlockerGate ?? config('resource-lock.unlocker.gate', null);
     }
 
-    // Resource class configuration
     public function resourceClass(?string $class): static
     {
         $this->resourceClass = $class;
@@ -249,7 +240,6 @@ class ResourceLockPlugin implements Plugin
         return $this->resourceClass ?? config('resource-lock.resource.class', LockResource::class);
     }
 
-    // Models configuration
     public function userModel(?string $model): static
     {
         $this->userModel = $model;
@@ -274,7 +264,6 @@ class ResourceLockPlugin implements Plugin
         return $this->resourceLockModel ?? config('resource-lock.models.ResourceLock', ResourceLock::class);
     }
 
-    // Lock timeout configuration
     public function lockTimeout(?int $minutes): static
     {
         $this->lockTimeout = $minutes;
@@ -287,7 +276,6 @@ class ResourceLockPlugin implements Plugin
         return $this->lockTimeout ?? config('resource-lock.lock_timeout', 10);
     }
 
-    // Check locks before saving configuration
     public function checkLocksBeforeSaving(bool $check = true): static
     {
         $this->checkLocksBeforeSaving = $check;
@@ -300,7 +288,6 @@ class ResourceLockPlugin implements Plugin
         return $this->checkLocksBeforeSaving ?? config('resource-lock.check_locks_before_saving', true);
     }
 
-    // Actions configuration
     public function resourceLockOwnerAction(?string $action): static
     {
         $this->resourceLockOwnerAction = $action;
