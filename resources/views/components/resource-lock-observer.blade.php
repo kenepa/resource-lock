@@ -1,4 +1,4 @@
-<div x-init="resourceLockObserverInit">
+<div x-init="resourceLockObserverInit" class="resource-lock-wrapper">
     <script>
         function resourceLockObserverInit() {
             Livewire.dispatch('resourceLockObserver::init')
@@ -15,10 +15,16 @@
         })
     </script>
 
+    <style>
+        .resource-lock-wrapper .fi-modal-close-overlay, .resource-lock-wrapper .fi-modal-close-overlay + div {
+            z-index: 9999;
+        }
+    </style>
 
-    @if ($usesPollingToDetectPresence)
+
+    {{-- @if ($usesPollingToDetectPresence)
         <div wire:poll.{{ $presencePollingInterval }}s="sendPresenceHeartbeat"></div>
-    @endif
+    @endif --}}
 
     <x-filament::modal
         id="resourceIsLockedNotice"
