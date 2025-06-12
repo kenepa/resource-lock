@@ -25,7 +25,7 @@ class ResourceLock extends Model
 
     public function isExpired(): bool
     {
-        $expiredDate = (new Carbon($this->updated_at))->addMinutes(ResourceLockPlugin::get()->getLockTimeout());
+        $expiredDate = (new Carbon($this->updated_at))->addSeconds(ResourceLockPlugin::get()->getLockTimeout());
 
         return Carbon::now()->greaterThan($expiredDate);
     }

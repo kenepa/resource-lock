@@ -1,5 +1,4 @@
 <div x-init="resourceLockObserverInit">
-
     <script>
         function resourceLockObserverInit() {
             Livewire.dispatch('resourceLockObserver::init')
@@ -15,6 +14,11 @@
             }
         })
     </script>
+
+
+    @if ($usesPollingToDetectPresence)
+        <div wire:poll.{{ $presencePollingInterval }}s="sendPresenceHeartbeat"></div>
+    @endif
 
     <x-filament::modal
         id="resourceIsLockedNotice"

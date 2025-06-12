@@ -90,13 +90,13 @@ return [
     | Lock timeout (in minutes)
     |--------------------------------------------------------------------------
     |
-    | The lock_timeout configuration specifies the time interval, in minutes,
+    | The lock_timeout configuration specifies the time interval, in seconds,
     | after which a lock on a resource will expire if it has not been manually
     | unlocked or released by the user.
     |
     */
 
-    'lock_timeout' => 10,
+    'lock_timeout' => 600,
 
     /*
     |--------------------------------------------------------------------------

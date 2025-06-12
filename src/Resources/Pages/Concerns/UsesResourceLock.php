@@ -30,6 +30,7 @@ trait UsesResourceLock
             'resourceLockObserver::init' => 'resourceLockObserverInit',
             'resourceLockObserver::unload' => 'resourceLockObserverUnload',
             'resourceLockObserver::unlock' => 'resourceLockObserverUnlock',
+            'resourceLockObserver::renewLock' => 'renewLock',
         ]);
     }
 
@@ -41,8 +42,8 @@ trait UsesResourceLock
     public function resourceLockObserverInit()
     {
         $this->returnUrl = $this->getResource()::getUrl('index');
-        $this->checkIfResourceLockHasExpired($this->record);
-        $this->lockResource($this->record);
+        $this->initializeResourceLock($this->record);
+        $this->setupPolling();
     }
 
     public function resourceLockObserverUnload()

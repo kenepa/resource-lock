@@ -5,6 +5,7 @@ namespace Kenepa\ResourceLock;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Blade;
 use Kenepa\ResourceLock\Models\ResourceLock;
 use Kenepa\ResourceLock\Resources\LockResource;
@@ -48,6 +49,10 @@ class ResourceLockPlugin implements Plugin
 
     protected ?string $resourceLockOwnerAction = null;
 
+    protected bool $usesPollingToDetectPresence = false;
+
+    protected int $presencePollingInterval = 15;
+
     public static function make(): static
     {
         return app(static::class);
@@ -79,8 +84,8 @@ class ResourceLockPlugin implements Plugin
         Livewire::component('resource-lock-observer', Http\Livewire\ResourceLockObserver::class);
 
         FilamentView::registerRenderHook(
-            'panels::body.end',
-            fn (): string => Blade::render('@livewire(\'resource-lock-observer\')'),
+            PanelsRenderHook::PAGE_START,
+            fn(): string => Blade::render('@livewire(\'resource-lock-observer\')'),
         );
     }
 
@@ -264,16 +269,16 @@ class ResourceLockPlugin implements Plugin
         return $this->resourceLockModel ?? config('resource-lock.models.ResourceLock', ResourceLock::class);
     }
 
-    public function lockTimeout(?int $minutes): static
+    public function lockTimeout(?int $seconds): static
     {
-        $this->lockTimeout = $minutes;
+        $this->lockTimeout = $seconds;
 
         return $this;
     }
 
     public function getLockTimeout(): int
     {
-        return $this->lockTimeout ?? config('resource-lock.lock_timeout', 10);
+        return $this->lockTimeout ?? config('resource-lock.lock_timeout', 600);
     }
 
     public function checkLocksBeforeSaving(bool $check = true): static
@@ -298,5 +303,29 @@ class ResourceLockPlugin implements Plugin
     public function getResourceLockOwnerAction(): string
     {
         return $this->resourceLockOwnerAction ?? config('resource-lock.actions.get_resource_lock_owner_action', \Kenepa\ResourceLock\Actions\GetResourceLockOwnerAction::class);
+    }
+
+    public function usesPollingToDetectPresence(bool $enable = true): static
+    {
+        $this->usesPollingToDetectPresence = $enable;
+
+        return $this;
+    }
+
+    public function shouldUsePollingToDetectPresence(): bool
+    {
+        return $this->usesPollingToDetectPresence ?? false;
+    }
+
+    public function presencePollingInterval(int $seconds): static
+    {
+        $this->presencePollingInterval = $seconds;
+
+        return $this;
+    }
+
+    public function getPresencePollingInterval(): int
+    {
+        return $this->presencePollingInterval ?? 15;
     }
 }

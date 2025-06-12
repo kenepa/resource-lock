@@ -2,9 +2,40 @@
 
 namespace Kenepa\ResourceLock\Resources\Pages\Concerns;
 
+/**
+ *  
+ * This trait provides common methods used by both UsesResourceLock and 
+ * UsesSimpleResourceLock traits, offering core functionality for managing
+ * resource locks.
+ */
 trait UsesLocks
 {
     public ?string $resourceLockOwner = null;
+
+
+    public function initializeResourceLock($record): void
+    {
+        if ($record->isUnlocked()) {
+            $record->lock();
+            return;
+        }
+
+        if ($record->hasExpiredLock()) {
+            $record->unlock();
+            $record->lock();
+            return;
+        }
+
+        // Refresh the lock if it is locked by the current user
+        if ($record->isLockedByCurrentUser()) {
+            $record->lock();
+            return;
+        }
+
+        // Locked by another user and not expired
+        $this->openLockedResourceModal();
+    }
+
 
     public function checkIfResourceLockHasExpired($record): void
     {
@@ -12,6 +43,7 @@ trait UsesLocks
             $record->unlock();
         }
     }
+
 
     /*
     * This function handles the locking of a resource. It first performs several checks before a resource
@@ -62,5 +94,25 @@ trait UsesLocks
             'close-modal',
             id: 'resourceIsLockedNotice'
         );
+    }
+
+    public function setupPolling()
+    {
+        $this->dispatch('enablePollingInResourceLockObserver');
+    }
+
+    public function renewLock()
+    {
+        $record = $this->record ?? $this->resourceRecord;
+
+        if (! $record) {
+            return;
+        }
+
+        if ($record->isLockedByCurrentUser()) {
+            $record->lock(); // Refresh/extend the lock
+        } else {
+            $this->openLockedResourceModal();
+        }
     }
 }

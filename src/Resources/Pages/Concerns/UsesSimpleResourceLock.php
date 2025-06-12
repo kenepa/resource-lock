@@ -22,6 +22,7 @@ trait UsesSimpleResourceLock
             'resourceLockObserver::init' => 'resourceLockObserverInit',
             'resourceLockObserver::unload' => 'resourceLockObserverUnload',
             'resourceLockObserver::unlock' => 'resourceLockObserverUnlock',
+            'resourceLockObserver::renewLock' => 'renewLock',
         ]);
     }
 
@@ -31,8 +32,8 @@ trait UsesSimpleResourceLock
         $this->resourceRecord = $this->getMountedTableActionRecord();
 
         $this->returnUrl = $this->getResource()::getUrl('index');
-        $this->checkIfResourceLockHasExpired($this->resourceRecord);
-        $this->lockResource($this->resourceRecord);
+        $this->initializeResourceLock($this->resourceRecord);
+        $this->setupPolling();
 
         return null;
     }

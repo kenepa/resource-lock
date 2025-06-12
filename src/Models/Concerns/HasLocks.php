@@ -22,19 +22,25 @@ trait HasLocks
     }
 
     /**
-     * Lock the resource.
+    * Lock the resource.
+    * Calling lock() on an already locked model will refresh the lock if it belongs to the current user.
      *
      * @return bool Returns true if locking the resource was successful, false otherwise.
      */
     public function lock(): bool
     {
-        if (! $this->isLocked()) {
+        if ($this->isUnlocked()) {
             $resourceLockModel = ResourceLockPlugin::get()->getResourceLockModel();
             $guard = $this->getCurrentAuthGuardName();
             $resourceLock = new $resourceLockModel;
             $resourceLock->user_id = auth()->guard($guard)->user()->id;
             $this->resourceLock()->save($resourceLock);
 
+            return true;
+        }
+
+        if ($this->isLockedByCurrentUser()) {
+            $this->resourceLock()->touch();
             return true;
         }
 
@@ -73,19 +79,27 @@ trait HasLocks
     }
 
     /**
+     * Check if the resource is unlocked.
+     *
+     * @return bool Returns true if the resource is unlocked, false otherwise.
+     */
+    public function isUnlocked(): bool
+    {
+        return ! $this->isLocked();
+    }
+
+    /**
      * Check if the lock on the resource has expired.
      *
      * @return bool Returns true if the lock on the resource has expired, false otherwise.
      */
     public function hasExpiredLock(): bool
     {
-        if (! $this->isLocked()) {
+        if ($this->isUnlocked()) {
             return false;
         }
 
-        $expiredDate = (new Carbon($this->resourceLock->updated_at))->addMinutes(ResourceLockPlugin::get()->getLockTimeout());
-
-        return Carbon::now()->greaterThan($expiredDate);
+        return $this->resourceLock->isExpired();;
     }
 
     /**
