@@ -38,4 +38,11 @@ class ResourceLockObserver extends Component
         $this->presencePollingInterval = ResourceLockPlugin::get()->getPresencePollingInterval();
         $this->usesPollingToDetectPresence = ResourceLockPlugin::get()->shouldUsePollingToDetectPresence();
     }
+
+    #[On('disablePollingInResourceLockObserver')]
+    public function disablePolling()
+    {
+        $this->usesPollingToDetectPresence = false;
+        $this->presencePollingInterval = 0;
+    }
 }

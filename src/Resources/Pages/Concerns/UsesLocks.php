@@ -3,14 +3,15 @@
 namespace Kenepa\ResourceLock\Resources\Pages\Concerns;
 
 /**
- *  
- * This trait provides common methods used by both UsesResourceLock and 
+ *
+ * This trait provides common methods used by both UsesResourceLock and
  * UsesSimpleResourceLock traits, offering core functionality for managing
  * resource locks.
  */
 trait UsesLocks
 {
     public ?string $resourceLockOwner = null;
+    public ?string $resourceType = null;
 
 
     public function initializeResourceLock($record): void
@@ -78,6 +79,12 @@ trait UsesLocks
     */
     protected function openLockedResourceModal(): void
     {
+        $record = $this->record ?? $this->resourceRecord;
+
+        if (! $record) {
+            return;
+        }
+
         $this->getResourceLockOwner();
 
         $this->dispatch(
@@ -101,11 +108,20 @@ trait UsesLocks
         $this->dispatch('enablePollingInResourceLockObserver');
     }
 
+    public function disablePolling() {
+        $this->dispatch('disablePollingInResourceLockObserver');
+    }
+
     public function renewLock()
     {
         $record = $this->record ?? $this->resourceRecord;
 
         if (! $record) {
+            return;
+        }
+
+        if ($record->isUnlocked()) {
+            $record->lock();
             return;
         }
 

@@ -57,6 +57,7 @@ trait UsesSimpleResourceLock
     public function resourceLockObserverUnload()
     {
         $this->resourceRecord->unlock();
+        $this->disablePolling();
     }
 
     public function resourceLockObserverUnlock()
@@ -69,7 +70,7 @@ trait UsesSimpleResourceLock
 
     public function getResourceLockOwner(): void
     {
-        if (ResourceLockPlugin::get()->shouldDisplayResourceLockOwner()) {
+        if ($this->resourceRecord?->resourceLock && ResourceLockPlugin::get()->shouldDisplayResourceLockOwner()) {
             $getResourceLockOwnerActionClass = ResourceLockPlugin::get()->getResourceLockOwnerAction();
             $getResourceLockOwnerAction = app($getResourceLockOwnerActionClass);
 

@@ -19,6 +19,7 @@ trait UsesResourceLock
 
     private bool $isLockable = true;
 
+
     /*
      * Initializes livewire event listeners on boot. This function uses livewire lifecycle hooks
      * to hook into lifecycle events of the livewire component that uses this trait
@@ -86,7 +87,7 @@ trait UsesResourceLock
 
     public function getResourceLockOwner(): void
     {
-        if (ResourceLockPlugin::get()->shouldDisplayResourceLockOwner()) {
+        if ($this->record?->resourceLock && ResourceLockPlugin::get()->shouldDisplayResourceLockOwner()) {
             $getResourceLockOwnerActionClass = ResourceLockPlugin::get()->getResourceLockOwnerAction();
             $getResourceLockOwnerAction = app($getResourceLockOwnerActionClass);
 
