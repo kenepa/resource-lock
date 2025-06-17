@@ -2,7 +2,6 @@
 
 namespace Kenepa\ResourceLock\Models\Concerns;
 
-use Carbon\Carbon;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Kenepa\ResourceLock\Models\ResourceLock;
@@ -22,8 +21,8 @@ trait HasLocks
     }
 
     /**
-    * Lock the resource.
-    * Calling lock() on an already locked model will refresh the lock if it belongs to the current user.
+     * Lock the resource.
+     * Calling lock() on an already locked model will refresh the lock if it belongs to the current user.
      *
      * @return bool Returns true if locking the resource was successful, false otherwise.
      */
@@ -41,6 +40,7 @@ trait HasLocks
 
         if ($this->isLockedByCurrentUser()) {
             $this->resourceLock()->touch();
+
             return true;
         }
 
@@ -99,7 +99,7 @@ trait HasLocks
             return false;
         }
 
-        return $this->resourceLock->isExpired();;
+        return $this->resourceLock->isExpired();
     }
 
     /**

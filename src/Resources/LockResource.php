@@ -5,6 +5,8 @@ namespace Kenepa\ResourceLock\Resources;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Gate;
@@ -73,13 +75,13 @@ class LockResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make()
+                DeleteAction::make()
                     ->icon('heroicon-o-lock-open')
                     ->successNotificationTitle(__('resource-lock::manager.unlocked'))
                     ->label(__('resource-lock::manager.unlock')),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+                DeleteBulkAction::make()
                     ->deselectRecordsAfterCompletion()
                     ->requiresConfirmation()
                     ->icon('heroicon-o-lock-open')
