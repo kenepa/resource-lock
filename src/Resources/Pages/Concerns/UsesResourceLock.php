@@ -2,8 +2,6 @@
 
 namespace Kenepa\ResourceLock\Resources\Pages\Concerns;
 
-use Kenepa\ResourceLock\ResourceLockPlugin;
-
 /*
  * The Resource Lock Trait provides several functions to an Edit Resource page to lock & unlock resources.
  * Beware that you model needs to also use the App\Models\Concerns\ResourceLock concern.
@@ -30,7 +28,6 @@ trait UsesResourceLock
             'resourceLockObserver::init' => 'resourceLockObserverInit',
             'resourceLockObserver::unload' => 'resourceLockObserverUnload',
             'resourceLockObserver::unlock' => 'resourceLockObserverUnlock',
-            'resourceLockObserver::renewLock' => 'renewLock',
         ]);
     }
 
@@ -42,8 +39,8 @@ trait UsesResourceLock
     public function resourceLockObserverInit()
     {
         $this->returnUrl = $this->getResource()::getUrl('index');
-        $this->initializeResourceLock($this->record);
-        $this->setupPolling();
+        $this->checkIfResourceLockHasExpired($this->record);
+        $this->lockResource($this->record);
     }
 
     public function resourceLockObserverUnload()
@@ -71,7 +68,7 @@ trait UsesResourceLock
      */
     public function save(bool $shouldRedirect = true, bool $shouldSendSavedNotification = true): void
     {
-        if (ResourceLockPlugin::get()->shouldCheckLocksBeforeSaving()) {
+        if (config('resource-lock.check_locks_before_saving', true)) {
             $this->record->refresh();
             if ($this->record->isLocked() && ! $this->record->isLockedByCurrentUser()) {
                 $this->checkIfResourceLockHasExpired($this->record);
@@ -86,8 +83,8 @@ trait UsesResourceLock
 
     public function getResourceLockOwner(): void
     {
-        if ($this->record?->resourceLock && ResourceLockPlugin::get()->shouldDisplayResourceLockOwner()) {
-            $getResourceLockOwnerActionClass = ResourceLockPlugin::get()->getResourceLockOwnerAction();
+        if (config('resource-lock.lock_notice.display_resource_lock_owner', false)) {
+            $getResourceLockOwnerActionClass = config('resource-lock.actions.get_resource_lock_owner_action');
             $getResourceLockOwnerAction = app($getResourceLockOwnerActionClass);
 
             $this->resourceLockOwner = $getResourceLockOwnerAction->execute($this->record->resourceLock->user);
