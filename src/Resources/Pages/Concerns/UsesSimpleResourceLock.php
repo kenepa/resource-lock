@@ -18,7 +18,7 @@ trait UsesSimpleResourceLock
     {
         $this->listeners = array_merge($this->listeners, [
             'resourceLockObserver::init' => 'resourceLockObserverInit',
-            'resourceLockObserver::unload' => 'resourceLockObserverUnload',
+            'resourceLockObserver::unloadSimple' => 'resourceLockObserverUnload',
             'resourceLockObserver::unlock' => 'resourceLockObserverUnlock',
         ]);
     }

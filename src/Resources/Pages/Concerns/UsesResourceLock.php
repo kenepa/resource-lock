@@ -55,9 +55,12 @@ trait UsesResourceLock
      */
     public function resourceLockObserverUnlock()
     {
-        if ($this->record->unlock(force: true)) {
-            $this->closeLockedResourceModal();
-            $this->record->lock();
+        if (is_null($this->activeRelationManager)) {
+            if ($this->record->unlock(force: true)) {
+                $this->closeLockedResourceModal();
+                $this->record->refresh();
+                $this->record->lock();
+            }
         }
     }
 

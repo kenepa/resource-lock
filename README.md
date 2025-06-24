@@ -130,6 +130,26 @@ class ManagePosts extends ManageRecords
 }
 ```
 
+#### Relation Managers
+
+If you have a [relation manager](https://filamentphp.com/docs/3.x/panels/resources/relation-managers#creating-a-relation-manager) in the resource,
+you'll need to use the new UsesRelationManagerResourceLock trait.
+
+```php
+// TreatmentsRelationManager.php
+
+use Filament\Resources\RelationManagers\RelationManager;
+use Kenepa\ResourceLock\Resources\Pages\Concerns\UsesRelationManagerResourceLock;
+
+class TreatmentsRelationManager extends RelationManager
+{
+    use UsesRelationManagerResourceLock;
+
+    protected static string $relationship = 'treatments';
+
+}
+```
+
 And that's it! Your resource is now able to be locked. Refer to the documentation below for more information on how to
 configure the locking functionality.
 
