@@ -5,29 +5,27 @@ namespace Kenepa\ResourceLock\Resources;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Gate;
-use Kenepa\ResourceLock\ResourceLockPlugin;
+use Kenepa\ResourceLock\Models\ResourceLock;
 use Kenepa\ResourceLock\Resources\LockResource\ManageResourceLocks;
 
 class LockResource extends Resource
 {
     public static function getNavigationIcon(): ?string
     {
-        return ResourceLockPlugin::get()->getNavigationIcon();
+        return __(config('resource-lock.manager.navigation_icon', 'heroicon-o-lock-closed'));
     }
 
     public static function getModel(): string
     {
-        return ResourceLockPlugin::get()->getResourceLockModel();
+        return config('resource-lock.models.ResourceLock', ResourceLock::class);
     }
 
     public static function getPluralLabel(): string
     {
-        return ResourceLockPlugin::get()->getPluralLabel();
+        return __(config('resource-lock.manager.plural_label', 'Resource Locks'));
     }
 
     public static function form(Form $form): Form
@@ -75,13 +73,13 @@ class LockResource extends Resource
                 //
             ])
             ->actions([
-                DeleteAction::make()
+                Tables\Actions\DeleteAction::make()
                     ->icon('heroicon-o-lock-open')
                     ->successNotificationTitle(__('resource-lock::manager.unlocked'))
                     ->label(__('resource-lock::manager.unlock')),
             ])
             ->bulkActions([
-                DeleteBulkAction::make()
+                Tables\Actions\DeleteBulkAction::make()
                     ->deselectRecordsAfterCompletion()
                     ->requiresConfirmation()
                     ->icon('heroicon-o-lock-open')
@@ -99,8 +97,8 @@ class LockResource extends Resource
 
     public static function canViewAny(): bool
     {
-        if (ResourceLockPlugin::get()->shouldLimitAccessToResourceLockManager()) {
-            return Gate::allows(ResourceLockPlugin::get()->getGate());
+        if (config('resource-lock.manager.limited_access')) {
+            return Gate::allows(config('resource-lock.manager.gate'));
         }
 
         return true;
@@ -108,8 +106,8 @@ class LockResource extends Resource
 
     public static function canDeleteAny(): bool
     {
-        if (ResourceLockPlugin::get()->shouldLimitAccessToResourceLockManager()) {
-            return Gate::allows(ResourceLockPlugin::get()->getGate());
+        if (config('resource-lock.manager.limited_access')) {
+            return Gate::allows(config('resource-lock.manager.gate'));
         }
 
         return true;
@@ -117,7 +115,7 @@ class LockResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        if (! ResourceLockPlugin::get()->shouldShowNavigationBadge()) {
+        if (! config('resource-lock.manager.navigation_badge')) {
             return null;
         }
 
@@ -126,21 +124,21 @@ class LockResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return ResourceLockPlugin::get()->getNavigationLabel();
+        return __(config('resource-lock.manager.navigation_label', 'Resource Lock Manager'));
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return ResourceLockPlugin::get()->getNavigationGroup();
+        return config('resource-lock.manager.navigation_group');
     }
 
     public static function getNavigationSort(): ?int
     {
-        return ResourceLockPlugin::get()->getNavigationSort();
+        return config('resource-lock.manager.navigation_sort');
     }
 
     public static function shouldRegisterNavigation(): bool
     {
-        return ResourceLockPlugin::get()->shouldRegisterNavigation();
+        return config('resource-lock.manager.should_register_navigation', true);
     }
 }

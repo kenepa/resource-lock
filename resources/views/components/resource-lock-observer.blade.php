@@ -1,63 +1,20 @@
-<div x-init="resourceLockObserverInit" class="resource-lock-wrapper">
+<div x-init="resourceLockObserverInit">
+
     <script>
         function resourceLockObserverInit() {
             Livewire.dispatch('resourceLockObserver::init')
         }
 
-        // Listen for events triggered by closing modal with 'close' button in footer
-        function trackModalContainers() {
-            document.querySelectorAll('div[x-ref="modalContainer"]:not([data-modal-tracked])').forEach(container => {
-                container.setAttribute('data-modal-tracked', 'true');
-
-                ['modal-closed'].forEach(eventType => {
-                    container.addEventListener(eventType, event => {
-                        if (event.detail.id.endsWith('-table-action')) {
-                            Livewire.dispatch('resourceLockObserver::unload')
-                        }
-                    });
-                });
-            });
-        }
-
-        function startObserving() {
-            // Initial
-            trackModalContainers();
-
-            const observer = new MutationObserver(function () {
-                trackModalContainers()
-            })
-
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true,
-            })
-        }
-
-        startObserving();
-
         window.onbeforeunload = function () {
             Livewire.dispatch('resourceLockObserver::unload')
         };
 
-        // Listen for events triggered by closing modal with close icon/click outside, save button in footer
         window.addEventListener('close-modal', event => {
-
             if (event.detail.id.endsWith('-table-action')) {
                 Livewire.dispatch('resourceLockObserver::unload')
             }
-        });
+        })
     </script>
-
-    <style>
-        .resource-lock-wrapper .fi-modal-close-overlay, .resource-lock-wrapper .fi-modal-close-overlay + div {
-            z-index: 9999;
-        }
-    </style>
-
-
-    @if ($usesPollingToDetectPresence)
-        <div wire:poll.{{ $presencePollingInterval }}s="sendPresenceHeartbeat"></div>
-    @endif
 
     <x-filament::modal
         id="resourceIsLockedNotice"

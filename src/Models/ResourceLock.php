@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Kenepa\ResourceLock\ResourceLockPlugin;
 
 class ResourceLock extends Model
 {
@@ -15,7 +14,7 @@ class ResourceLock extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(ResourceLockPlugin::get()->getUserModel());
+        return $this->belongsTo(config('resource-lock.models.User'));
     }
 
     public function lockable(): MorphTo
@@ -25,7 +24,7 @@ class ResourceLock extends Model
 
     public function isExpired(): bool
     {
-        $expiredDate = (new Carbon($this->updated_at))->addSeconds(ResourceLockPlugin::get()->getLockTimeout());
+        $expiredDate = (new Carbon($this->updated_at))->addMinutes(config('resource-lock.lock_timeout'));
 
         return Carbon::now()->greaterThan($expiredDate);
     }

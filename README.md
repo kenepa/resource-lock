@@ -1,4 +1,4 @@
-# Resource Lock
+# Resoure Lock
 
 <a href="https://github.com/kenepa/resource-lock" class="filament-hidden">
 <img style="width: 100%; max-width: 100%;" alt="filament-resource-lock-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-log-banner.png" >
@@ -18,10 +18,19 @@ saves or discards their changes.
 ## Installation
 
 | Plugin Version | Filament Version | PHP Version |
-|----------------|------------------|-------------|
-| 1.x            | 2.x              | \> 8.0      |
-| 2.x            | 3.x              | \> 8.1      |
-| 3.x            | 3.x              | \> 8.1      |
+|--------------|-----------------|-------------|
+| 1.x         | 2.x   | \> 8.0      |
+| 2.x          | 3.x             | \> 8.1      |
+
+
+
+> Notice - Upgrading to Version 2.1.x :  
+> In case you have published the config, make sure to update the following in your config:
+> ```php
+>    'resource' => [
+>        'class' => \Kenepa\ResourceLock\Resources\LockResource::class,
+>    ],
+> ```
 
 You can install the package via composer:
 
@@ -48,24 +57,11 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-# Upgrade guides
+You can publish run the config (optional)
 
-## Upgrade to 2.x
-
-> Notice - Upgrading to Version 2.1.x :  
-> In case you have published the config, make sure to update the following in your config:
-> ```php
->    'resource' => [
->        'class' => \Kenepa\ResourceLock\Resources\LockResource::class,
->    ],
-> ```
-
-## Upgrade from 2.x to 3.x
-
-### Breaking Changes
-
-- **Plugin-based Customization**: Icons, labels, model classes, and access gates now configured via the plugin.
-- **Timeout unit changed**: Now uses seconds instead of minutes
+```bash
+php artisan vendor:publish --tag=resource-lock-config
+```
 
 ## Usage
 
@@ -137,25 +133,6 @@ class ManagePosts extends ManageRecords
 And that's it! Your resource is now able to be locked. Refer to the documentation below for more information on how to
 configure the locking functionality.
 
-## Use polling to detect presence (SPA mode)
-
-To make the resource locking feature possible for SPA we polling based detection to check if a user is still editing the resource.
-This is disabled by default but you can enable it in the config:
-
-```php
-use Kenepa\ResourceLock\ResourceLockPlugin;
-use Filament\Panel;
- 
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->plugin(ResourceLockPlugin::make()
-        ->usesPollingToDetectPresence()
-        ->presencePollingInterval(10));
-}
-```
-
 ## Resource Lock manager
 
 <img style="width: 100%; max-width: 100%;" alt="filament-resource-lock-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-lock-manager.png" >
@@ -175,16 +152,23 @@ setting it to true allows you to specify either a Laravel Gate class or a permis
 the [Spatie Permissions package](https://github.com/spatie/laravel-permission).
 
 ```php
-use Kenepa\ResourceLock\ResourceLockPlugin;
-use Filament\Panel;
- 
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->limitedAccessToResourceLockManager()
-        ->gate('unlock')
-}
+// resource-lock.php
+
+   /*
+    |--------------------------------------------------------------------------
+    | Resource Unlocker
+    |--------------------------------------------------------------------------
+    |
+    | The unlocker configuration specifies whether limited access is enabled for
+    | the resource lock feature. If limited access is enabled, only specific
+    | users or roles will be able to unlock locked resources.
+    |
+    */
+
+    'unlocker' => [
+        'limited_access' => true,
+        'gate' => 'unlock'
+    ],
 ```
 
 Example
@@ -209,19 +193,35 @@ class you want to use. This will ensure that the ResourceLock functionality work
 implementation.
 
 ```php
-use Kenepa\ResourceLock\ResourceLockPlugin;
-use Filament\Panel;
- 
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->userModel(\App\Models\CustomUser::class)
-        ->resourceLockModel(\App\Models\CustomResourceLock::class);
-}
+// resource-lock.php
+
+ /*
+    |--------------------------------------------------------------------------
+    | Models
+    |--------------------------------------------------------------------------
+    |
+    | The models configuration specifies the classes that represent your application's
+    | data objects. This configuration is used by the framework to interact with
+    | the application's data models. You can even implement your own ResourceLock model.
+    |
+    */
+
+    'models' => [
+        'User' => \App\Models\CustomUser::class,
+         'ResourceLock' => \App\Models\CustomResourceLock::class,
+    ],
 ```
 
 ### Displaying the user who has locked the resource
+
+Use the ```display_resource_lock_owner``` within the ```resource-lock.php``` config to control whether or not the locked
+resource owner is
+displayed in the modal. Set the option to **true** to show the owner's username or other identifying information. The
+modal
+can be triggered by a button click or automatically when the resource is accessed.
+
+By default, the package displays the name of the user: ```$userModel->name```. However, if your user model doesn't have
+a name or you want to display a different identifier, you can create a custom action to overwrite the default behavior.
 
 This package uses actions which allows you to implement your own custom logic. An action class is nothing more than a
 simple class with a method that executes some
@@ -249,21 +249,17 @@ class CustomResourceLockOwnerAction extends GetResourceLockOwnerAction
 }
 ```
 
-Next, register your custom action within the your plugin configuration:
+Next, register your custom action within the resource-lock.config file. Replace the default
+get_resource_lock_owner_action value with your custom action's class name. For example:
 
 ```php
-use Kenepa\ResourceLock\ResourceLockPlugin;
-use Filament\Panel;
- 
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->plugin(
-            ResourceLockPlugin::make()
-                ->resourceLockOwnerAction(\Kenepa\ResourceLock\Actions\CustomGetResourceLockOwnerAction::class)
-        );
-}
+// resource-lock.php
+
+    'actions' => [
+-       'get_resource_lock_owner_action' => \Kenepa\ResourceLock\Actions\GetResourceLockOwnerAction::class
++       'get_resource_lock_owner_action' => \Kenepa\ResourceLock\Actions\CustomGetResourceLockOwnerAction::class   
+    ],
+
 ```
 
 ### Overriding default functionality
@@ -301,6 +297,12 @@ php artisan vendor:publish --tag="resource-lock-migrations"
 php artisan migrate
 ```
 
+You can publish the config file with:
+
+```bash
+php artisan vendor:publish --tag="resource-lock-config"
+```
+
 Optionally, you can publish the views using
 
 > Note: Publishing Blade views can introduce breaking changes into your app. If you're interested in how to stay
@@ -309,6 +311,8 @@ Optionally, you can publish the views using
 ```bash
 php artisan vendor:publish --tag="resource-lock-views"
 ```
+
+## T
 
 ## Coming soon
 

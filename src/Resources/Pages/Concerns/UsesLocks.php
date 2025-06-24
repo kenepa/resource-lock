@@ -2,41 +2,9 @@
 
 namespace Kenepa\ResourceLock\Resources\Pages\Concerns;
 
-/**
- * This trait provides common methods used by both UsesResourceLock and
- * UsesSimpleResourceLock traits, offering core functionality for managing
- * resource locks.
- */
 trait UsesLocks
 {
     public ?string $resourceLockOwner = null;
-    public ?string $resourceType = null;
-
-    public function initializeResourceLock($record): void
-    {
-        if ($record->isUnlocked()) {
-            $record->lock();
-
-            return;
-        }
-
-        if ($record->hasExpiredLock()) {
-            $record->unlock();
-            $record->lock();
-
-            return;
-        }
-
-        // Refresh the lock if it is locked by the current user
-        if ($record->isLockedByCurrentUser()) {
-            $record->lock();
-
-            return;
-        }
-
-        // Locked by another user and not expired
-        $this->openLockedResourceModal();
-    }
 
     public function checkIfResourceLockHasExpired($record): void
     {
@@ -53,52 +21,18 @@ trait UsesLocks
     {
         $this->resourceLockType = class_basename($record);
 
-        if ($this->isLockedByOtherUser($record)) {
+        if ($record->isLockedByCurrentUser()) {
+            $record->lock();
+        } elseif ($record->isLocked()) {
             $this->openLockedResourceModal();
         } else {
             $record->lock();
         }
-    }
-
-    public function isLockedByOtherUser($record): bool
-    {
-        return $record->isLocked() && ! $record->isLockedByCurrentUser();
     }
 
     public function resourceLockReturnUrl()
     {
         return $this->getResource()::getUrl('index');
-    }
-
-    public function setupPolling()
-    {
-        $this->dispatch('enablePollingInResourceLockObserver');
-    }
-
-    public function disablePolling()
-    {
-        $this->dispatch('disablePollingInResourceLockObserver');
-    }
-
-    public function renewLock()
-    {
-        $record = $this->record ?? $this->resourceRecord;
-
-        if (! $record) {
-            return;
-        }
-
-        if ($record->isUnlocked()) {
-            $record->lock();
-
-            return;
-        }
-
-        if ($record->isLockedByCurrentUser()) {
-            $record->lock(); // Refresh/extend the lock
-        } else {
-            $this->openLockedResourceModal();
-        }
     }
 
     /*
@@ -109,12 +43,6 @@ trait UsesLocks
     */
     protected function openLockedResourceModal(): void
     {
-        $record = $this->record ?? $this->resourceRecord;
-
-        if (! $record) {
-            return;
-        }
-
         $this->getResourceLockOwner();
 
         $this->dispatch(
