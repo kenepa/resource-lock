@@ -75,7 +75,7 @@ trait HasLocks
             return false;
         }
 
-        return $this->resourceLock->exists();
+        return $this->resourceLock->exists() && ! $this->resourceLock->isExpired();
     }
 
     /**
@@ -96,7 +96,7 @@ trait HasLocks
     public function hasExpiredLock(): bool
     {
         if ($this->isUnlocked()) {
-            return false;
+            return true;
         }
 
         return $this->resourceLock->isExpired();
