@@ -2,7 +2,7 @@
 
 namespace Kenepa\ResourceLock\Resources\LockResource;
 
-use Filament\Pages\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ManageRecords;
 use Kenepa\ResourceLock\ResourceLockPlugin;
 use Kenepa\ResourceLock\Resources\LockResource;
@@ -11,7 +11,7 @@ class ManageResourceLocks extends ManageRecords
 {
     protected static string $resource = LockResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Action::make(__('resource-lock::manager.unlock_all'))
