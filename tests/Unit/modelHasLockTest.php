@@ -184,3 +184,31 @@ it('prevents locking a resource that is already locked by another user', functio
     expect($post->isLockedByCurrentUser())->toBeFalse();
     assertDatabaseCount(ResourceLock::class, 1);
 });
+
+it('prevents multiple users from locking when expired locks exist', function () {
+    // Arrange
+    $user1 = createUser();
+    $user2 = createUser();
+    $post = createPost();
+
+    // Create multiple expired locks for the same resource
+    createExpiredResourceLock($user1, $post);
+    createExpiredResourceLock($user2, $post);
+
+    // Act & Assert with user1
+    actingAs($user1);
+    $post->refresh();
+    expect($post->isUnlocked())
+        ->toBeTrue()
+        ->and($post->lock())
+        ->toBeTrue(); // This should be true because locks are expired
+    // User1 can lock because resource appears unlocked
+
+    // Act & Assert with user2
+    actingAs($user2);
+    $post->refresh();
+    expect($post->isUnlocked())
+        ->toBeFalse()
+        ->and($post->lock())
+        ->toBeFalse();
+});
