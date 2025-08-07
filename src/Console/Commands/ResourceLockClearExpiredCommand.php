@@ -33,7 +33,7 @@ class ResourceLockClearExpiredCommand extends Command
                 return;
             }
 
-            $this->info("Removing $count expired resource lock(s)...");
+            $this->info("Removing {$count} expired resource lock(s)...");
 
             foreach ($expiredLocks as $lock) {
                 $lock->delete();
@@ -41,7 +41,7 @@ class ResourceLockClearExpiredCommand extends Command
 
             $this->info('All expired resource locks successfully removed.');
         } catch (Exception $e) {
-            $this->error('Failed to clear expired resource locks: '.$e->getMessage());
+            $this->error('Failed to clear expired resource locks: ' . $e->getMessage());
 
             return;
         }

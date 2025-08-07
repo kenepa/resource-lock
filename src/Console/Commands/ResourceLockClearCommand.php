@@ -29,11 +29,11 @@ class ResourceLockClearCommand extends Command
                 return;
             }
 
-            $this->info("Removing $count resource lock(s)...");
+            $this->info("Removing {$count} resource lock(s)...");
             ResourceLock::truncate();
             $this->info('All resource locks successfully removed.');
         } catch (Exception $e) {
-            $this->error('Failed to clear resource locks: '.$e->getMessage());
+            $this->error('Failed to clear resource locks: ' . $e->getMessage());
 
             return;
         }
