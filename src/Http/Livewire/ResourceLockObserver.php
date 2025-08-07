@@ -10,7 +10,9 @@ use Livewire\Component;
 class ResourceLockObserver extends Component
 {
     public bool $isAllowedToUnlock = false;
+
     public bool $usesPollingToDetectPresence = false;
+
     public int $presencePollingInterval = 15;
 
     public function render()

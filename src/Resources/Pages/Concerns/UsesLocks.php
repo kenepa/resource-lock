@@ -10,6 +10,7 @@ namespace Kenepa\ResourceLock\Resources\Pages\Concerns;
 trait UsesLocks
 {
     public ?string $resourceLockOwner = null;
+
     public ?string $resourceType = null;
 
     public function initializeResourceLock($record): void
