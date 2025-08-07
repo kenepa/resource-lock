@@ -53,6 +53,10 @@ class ResourceLockPlugin implements Plugin
 
     protected int $presencePollingInterval = 15;
 
+    protected bool $pollingKeepAlive = false;
+
+    protected bool $pollingVisible = false;
+
     public static function make(): static
     {
         return app(static::class);
@@ -327,5 +331,29 @@ class ResourceLockPlugin implements Plugin
     public function getPresencePollingInterval(): int
     {
         return $this->presencePollingInterval ?? 15;
+    }
+
+    public function pollingKeepAlive(bool $keepAlive = true): static
+    {
+        $this->pollingKeepAlive = $keepAlive;
+
+        return $this;
+    }
+
+    public function shouldUsePollingKeepAlive(): bool
+    {
+        return $this->pollingKeepAlive ?? false;
+    }
+
+    public function pollingVisible(bool $visible = true): static
+    {
+        $this->pollingVisible = $visible;
+
+        return $this;
+    }
+
+    public function shouldUsePollingVisible(): bool
+    {
+        return $this->pollingVisible ?? false;
     }
 }

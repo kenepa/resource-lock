@@ -56,7 +56,7 @@
 
 
     @if ($usesPollingToDetectPresence)
-        <div wire:poll.{{ $presencePollingInterval }}s="sendPresenceHeartbeat"></div>
+        <div wire:poll{{ $pollingKeepAlive ? '.keep-alive' : '' }}{{ $pollingVisible ? '.visible' : '' }}.{{ $presencePollingInterval }}s="sendPresenceHeartbeat"></div>
     @endif
 
     <x-filament::modal

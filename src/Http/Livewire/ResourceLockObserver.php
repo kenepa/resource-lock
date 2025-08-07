@@ -15,6 +15,10 @@ class ResourceLockObserver extends Component
 
     public int $presencePollingInterval = 15;
 
+    public bool $pollingKeepAlive = false;
+
+    public bool $pollingVisible = false;
+
     public function render()
     {
         return view('resource-lock::components.resource-lock-observer');
@@ -39,6 +43,8 @@ class ResourceLockObserver extends Component
     {
         $this->presencePollingInterval = ResourceLockPlugin::get()->getPresencePollingInterval();
         $this->usesPollingToDetectPresence = ResourceLockPlugin::get()->shouldUsePollingToDetectPresence();
+        $this->pollingKeepAlive = ResourceLockPlugin::get()->shouldUsePollingKeepAlive();
+        $this->pollingVisible = ResourceLockPlugin::get()->shouldUsePollingVisible();
     }
 
     #[On('disablePollingInResourceLockObserver')]
@@ -46,5 +52,7 @@ class ResourceLockObserver extends Component
     {
         $this->usesPollingToDetectPresence = false;
         $this->presencePollingInterval = 0;
+        $this->pollingKeepAlive = false;
+        $this->pollingVisible = false;
     }
 }
