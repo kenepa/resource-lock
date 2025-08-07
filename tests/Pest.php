@@ -46,7 +46,7 @@ function createExpiredResourceLock(User $user, Post $post): ResourceLock
     return $resourceLock;
 }
 
-function createResourceLock($user, $post): ResourceLock
+function createActiveResourceLock($user, $post): ResourceLock
 {
     $resourceLock = (new ResourceLock)->forceFill([
         'updated_at' => Carbon::now(),
