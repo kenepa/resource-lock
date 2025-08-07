@@ -156,6 +156,15 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+### Polling Configuration
+
+When using polling to detect presence, you can configure additional options (by default Livewire will reduce the number of polling requests by 95% until the user revisits the tab.
+
+):
+
+- **`pollingKeepAlive()`**: Keeps the polling connection alive even when the user has the tab in the background.
+- **`pollingVisible()`**: Only polls when the browser tab is visible to the user. This helps reduce server load by pausing polling when users switch to other tabs.
+
 ## Resource Lock manager
 
 <img style="width: 100%; max-width: 100%;" alt="filament-resource-lock-art" src="https://raw.githubusercontent.com/kenepa/Kenepa/main/art/ResourceLock/filament-resource-lock-manager.png" >
