@@ -152,9 +152,14 @@ public function panel(Panel $panel): Panel
         // ...
         ->plugin(ResourceLockPlugin::make()
         ->usesPollingToDetectPresence()
-        ->presencePollingInterval(10));
+        ->presencePollingInterval(10)
+        ->lockTimeout(15)
+        );
 }
 ```
+
+> **Tip:**  
+> Make sure the lock timeout is **not** set to a value lower than the presence‑polling interval. If it is, the lock may time out before a new heartbeat is sent, allowing another user to acquire the lock while the current user is still editing the page.
 
 ### Polling Configuration
 
