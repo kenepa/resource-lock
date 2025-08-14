@@ -17,7 +17,7 @@ trait HasLocks
      */
     public function resourceLock(): MorphOne
     {
-        return $this->morphOne(ResourceLockPlugin::get()->getResourceLockModel(), 'lockable');
+        return $this->morphOne(ResourceLockPlugin::get()->getResourceLockModel(), 'lockable')->latestOfMany();
     }
 
     /**

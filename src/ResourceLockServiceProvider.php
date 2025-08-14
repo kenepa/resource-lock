@@ -2,6 +2,8 @@
 
 namespace Kenepa\ResourceLock;
 
+use Kenepa\ResourceLock\Console\Commands\ResourceLockClearCommand;
+use Kenepa\ResourceLock\Console\Commands\ResourceLockClearExpiredCommand;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -22,6 +24,8 @@ class ResourceLockServiceProvider extends PackageServiceProvider
                     ->publishMigrations()
                     ->askToRunMigrations()
                     ->askToStarRepoOnGitHub('kenepa/resource-lock');
-            });
+            })
+            ->hasCommand(ResourceLockClearCommand::class)
+            ->hasCommand(ResourceLockClearExpiredCommand::class);
     }
 }

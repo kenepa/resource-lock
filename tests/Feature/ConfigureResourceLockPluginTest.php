@@ -78,3 +78,33 @@ describe('Navigation Customization', function () {
         expect($resourceLockNavigationItem->getSort())->toBe($customSort);
     });
 });
+
+describe('Polling Configuration', function () {
+    it('uses default keep-alive value when not configured', function () {
+        $plugin = ResourceLockPlugin::make();
+        
+        expect($plugin->shouldUsePollingKeepAlive())->toBeFalse();
+    });
+
+    it('uses custom keep-alive value when configured via plugin', function () {
+        $plugin = ResourceLockPlugin::make()
+            ->pollingKeepAlive(true);
+        
+        expect($plugin->shouldUsePollingKeepAlive())->toBeTrue();
+    });
+
+
+    it('uses default visible value when not configured', function () {
+        $plugin = ResourceLockPlugin::make();
+        
+        expect($plugin->shouldUsePollingVisible())->toBeFalse();
+    });
+
+    it('uses custom visible value when configured via plugin', function () {
+        $plugin = ResourceLockPlugin::make()
+            ->pollingVisible(true);
+        
+        expect($plugin->shouldUsePollingVisible())->toBeTrue();
+    });
+
+});

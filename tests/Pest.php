@@ -45,3 +45,17 @@ function createExpiredResourceLock(User $user, Post $post): ResourceLock
 
     return $resourceLock;
 }
+
+function createActiveResourceLock($user, $post): ResourceLock
+{
+    $resourceLock = (new ResourceLock)->forceFill([
+        'updated_at' => Carbon::now(),
+        'user_id' => $user->id,
+        'lockable_type' => 'Kenepa\ResourceLock\Tests\Resources\Models\Post',
+        'lockable_id' => $post->id,
+    ]);
+
+    $resourceLock->save();
+
+    return $resourceLock;
+}
