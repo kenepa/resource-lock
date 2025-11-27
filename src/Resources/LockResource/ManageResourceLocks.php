@@ -9,7 +9,10 @@ use Kenepa\ResourceLock\Resources\LockResource;
 
 class ManageResourceLocks extends ManageRecords
 {
-    protected static string $resource = LockResource::class;
+    public static function getResource(): string
+    {
+        return app(ResourceLockPlugin::class)->getResourceClass();
+    }
 
     protected function getHeaderActions(): array
     {
