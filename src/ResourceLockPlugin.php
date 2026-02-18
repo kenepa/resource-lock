@@ -89,7 +89,7 @@ class ResourceLockPlugin implements Plugin
 
         FilamentView::registerRenderHook(
             PanelsRenderHook::PAGE_START,
-            fn (): string => Blade::render('@livewire(\'resource-lock-observer\')'),
+            fn (): string => Blade::render('<livewire:resource-lock-observer />'),
         );
     }
 
