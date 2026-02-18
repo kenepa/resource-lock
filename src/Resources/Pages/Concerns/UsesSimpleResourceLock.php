@@ -3,6 +3,7 @@
 namespace Kenepa\ResourceLock\Resources\Pages\Concerns;
 
 use Kenepa\ResourceLock\ResourceLockPlugin;
+use Livewire\Attributes\On;
 
 trait UsesSimpleResourceLock
 {
@@ -15,16 +16,6 @@ trait UsesSimpleResourceLock
     public string $resourceLockType;
 
     private bool $isLockable = true;
-
-    public function bootUsesSimpleResourceLock(): void
-    {
-        $this->listeners = array_merge($this->listeners, [
-            'resourceLockObserver::init' => 'resourceLockObserverInit',
-            'resourceLockObserver::unload' => 'resourceLockObserverUnload',
-            'resourceLockObserver::unlock' => 'resourceLockObserverUnlock',
-            'resourceLockObserver::renewLock' => 'renewLock',
-        ]);
-    }
 
     public function mountTableAction(string $name, ?string $record = null, array $arguments = []): mixed
     {
@@ -54,12 +45,14 @@ trait UsesSimpleResourceLock
         return null;
     }
 
+    #[On('resourceLockObserver::unload')]
     public function resourceLockObserverUnload()
     {
         $this->resourceRecord->unlock();
         $this->disablePolling();
     }
 
+    #[On('resourceLockObserver::unlock')]
     public function resourceLockObserverUnlock()
     {
         if ($this->resourceRecord->unlock(force: true)) {

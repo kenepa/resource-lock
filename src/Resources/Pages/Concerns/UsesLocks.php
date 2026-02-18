@@ -2,6 +2,8 @@
 
 namespace Kenepa\ResourceLock\Resources\Pages\Concerns;
 
+use Livewire\Attributes\On;
+
 /**
  * This trait provides common methods used by both UsesResourceLock and
  * UsesSimpleResourceLock traits, offering core functionality for managing
@@ -81,6 +83,7 @@ trait UsesLocks
         $this->dispatch('disablePollingInResourceLockObserver');
     }
 
+    #[On('resourceLockObserver::renewLock')]
     public function renewLock()
     {
         $record = $this->record ?? $this->resourceRecord;
